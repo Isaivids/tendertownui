@@ -1,0 +1,26 @@
+.left-sidebar {
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  scroll-behavior: smooth;
+  &::-webkit-scrollbar {
+    width: 6px; /* Adjust the width as needed */
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
+  div {
+    img {
+      height: 60px;
+    }
+  }
+  .scroll-button {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 5px;
+    margin: 5px;
+    cursor: pointer;
+  }
+}
