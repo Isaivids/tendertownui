@@ -38,13 +38,13 @@ const SideBar = () => {
     },
   ];
   return (
-    <div className="left-sidebar">
+    <div className="left-sidebar p-3">
       {data.length > 0 &&
         data.map((x: any, index: number) => {
           return (
-            <div key={index} className="flex flex-column mb-3">
+            <div key={index} className="flex p-2 surface-0 flex-column mb-3 shadow-1 border-round-md">
               <img src={x.image} alt={x.text} />
-              <Link to="/" className="text-center	">
+              <Link to={`/list/${x.text}`} className="text-center	">
                 {x.text}
               </Link>
             </div>

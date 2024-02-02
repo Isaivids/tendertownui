@@ -14,9 +14,8 @@ function App() {
         <SideBar />
         <div className="main-content">
           <Routes>
-            <Route path="/" element={<List />} />
-            <Route path="/about" element={<Login />} />
-            <Route path="/contact" element={<List />} />
+            <Route path="/list/:id" element={<List />} />
+            <Route path="/" element={<Login />} />
           </Routes>
         </div>
         <Cart />

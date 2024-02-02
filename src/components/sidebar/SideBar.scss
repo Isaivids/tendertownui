@@ -1,16 +1,4 @@
 .left-sidebar {
-  height: calc(100vh - 60px);
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: transparent transparent;
-  scroll-behavior: smooth;
-  &::-webkit-scrollbar {
-    width: 6px; /* Adjust the width as needed */
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: transparent;
-  }
   div {
     img {
       height: 60px;

@@ -1,14 +1,21 @@
-.left-sidebar {
+.left-sidebar,.cart {
   background: #f0f0f0;
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+  scrollbar-width: none;
+  scrollbar-color: transparent transparent;
+  scroll-behavior: smooth;
+  &::-webkit-scrollbar {
+    width: 6px; /* Adjust the width as needed */
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
 }
 
 .main-content {
   flex: 1;
-}
-
-.right-sidebar {
-  width: 200px;
-  background: #f0f0f0;
 }
 
 $primary-color : #c9ddb7;
