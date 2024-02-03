@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { Password } from "primereact/password";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
+  const navigate = useNavigate();
   const handleLogin = () => {
     // Add your login logic here
+    navigate('/list/juice')
     console.log("Login clicked. Username:", username, "Password:", password);
   };
 
