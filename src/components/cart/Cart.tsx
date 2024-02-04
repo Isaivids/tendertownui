@@ -5,7 +5,7 @@ import { Button } from 'primereact/button';
 import "../../App.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../store/store";
-import { deleteOneCartItem, getCartItems, removeItem, updateCount } from "../../store/slice/cart";
+import { changeCount, clearCart, deleteOneCartItem, getCartItems, removeItem, removeOneItem} from "../../store/slice/cart";
 import { IoMdRemoveCircleOutline } from "react-icons/io";
 
 const Cart = () => {
@@ -22,37 +22,33 @@ const Cart = () => {
   }, [dispatch]);
 
 
-  const updateCountCart = async(payload:any,type:string) =>{
-    const body = {
-      userId : "user123",
-      productId : payload.productId,
-      action : type
+  const changeCountValue = async (data:any,type:string) =>{
+    const body:any = {
+      productId: data.productId,
+      count: 1,
+      type : type
     }
     try {
-      await dispatch(updateCount(body));
+      dispatch(changeCount(body));
     } catch (error:any) {
       console.error("Error adding to cart:", error.message);
     }
   }
 
   const deleteOneCartItemFromCart = async(payload:any) =>{
-    const body = {
-      userId : "user123",
+    const body:any = {
       productId : payload.productId,
     }
     try {
-      await dispatch(deleteOneCartItem(body));
+      dispatch(removeOneItem(body));
     } catch (error:any) {
       console.error("Error deleting the cart:", error.message);
     }
   }
 
-  const clearCart = async() =>{
-    const body = {
-      userId : "user123",
-    }
+  const clearCartData = async() =>{
     try {
-      await dispatch(removeItem(body));
+      dispatch(clearCart());
     } catch (error:any) {
       console.error("Error deleting the cart:", error.message);
     }
@@ -75,12 +71,13 @@ const Cart = () => {
     <div className="cart flex flex-column">
       <div className="flex p-3 gap-1 align-items-center">
         <span>Product Cart</span>
-        <Button severity="danger" label="Clear Cart" onClick={() => clearCart()}/>
+        <Button severity="danger" label="Clear Cart" onClick={() => clearCartData()}/>
       </div>
       {cartDetails.loading && "Loadingg"}
       {cartDetails.error && "error in loading data"}
+      <span>{cartDetails.total}</span>
       <div>
-        {data.length>0 && data.map((item:any, index:any) => (
+        {data && data.length>0 && data.map((item:any, index:any) => (
           <div
             key={index}
             className="flex m-3 align-items-center gap-2 p-2 surface-0 flex-column mb-3 shadow-1 border-round-md"
@@ -88,14 +85,14 @@ const Cart = () => {
             {item.name} - ₹ {item.price * item.count}
             <Button rounded  severity="danger" onClick={() => deleteOneCartItemFromCart(item)}><IoMdRemoveCircleOutline /></Button>
             <div className="flex">
-            <button onClick={() => updateCountCart(item,'decrease')}><FaMinus /></button>
+            <button onClick={() => changeCountValue(item,'decrease')}><FaMinus /></button>
             <input
               type="text"
               style={{ width: "30px" }}
               value={item.count}
               disabled
             />
-            <button onClick={() => updateCountCart(item,'increase')}><FaPlus /></button>
+            <button onClick={() => changeCountValue(item,'increase')}><FaPlus /></button>
             </div>
           </div>
         ))}

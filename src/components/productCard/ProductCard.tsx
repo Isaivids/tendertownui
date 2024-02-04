@@ -5,7 +5,7 @@ import "./ProductCard.scss";
 import "../../App.scss";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store/store";
-import { addToCart } from "../../store/slice/cart";
+import { addToCart, addToCartReducer } from "../../store/slice/cart";
 const ProductCard = ({ data,cartDetails }: any) => {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -34,7 +34,7 @@ const ProductCard = ({ data,cartDetails }: any) => {
       count: 1
     }
     try {
-      await dispatch(addToCart(body));
+      dispatch(addToCartReducer(body));
     } catch (error:any) {
       console.error("Error adding to cart:", error.message);
     }
