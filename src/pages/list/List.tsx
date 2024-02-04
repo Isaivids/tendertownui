@@ -6,7 +6,6 @@ import { getProducts } from "../../store/slice/products";
 import ProductCard from "../../components/productCard/ProductCard";
 import PieLoader from "../../components/pieLoader/PieLoader";
 import { Message } from "primereact/message";
-import { clearCart } from "../../store/slice/cart";
 
 const List = () => {
   const params: any = useParams();
