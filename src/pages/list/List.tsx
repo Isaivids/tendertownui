@@ -4,6 +4,9 @@ import { useParams } from "react-router-dom";
 import { AppDispatch } from "../../store/store";
 import { getProducts } from "../../store/slice/products";
 import ProductCard from "../../components/productCard/ProductCard";
+import PieLoader from "../../components/pieLoader/PieLoader";
+import { Message } from "primereact/message";
+import { clearCart } from "../../store/slice/cart";
 
 const List = () => {
   const params: any = useParams();
@@ -28,14 +31,16 @@ const List = () => {
       await fetchData();
     };
     fetchDataAndLog();
-  }, [fetchData, params.id]);
-  
+    return () => {
+      dispatch(clearCart());
+    };
+  }, [dispatch, fetchData, params.id]);
+
   return (
     <div>
-      {productDetails.loading && "Loadingg"}
-      {productDetails.error && "error in loading data"}
-      Here's your {pageName}
-      {!productDetails.loading && !productDetails.error && !cartDetails.loading && !cartDetails.error && (
+      {productDetails.loading && <PieLoader />}
+      {productDetails.error && <Message severity="error" text="Unable to fetch Data" />}
+      {!productDetails.loading && !productDetails.error && !cartDetails.loading && !cartDetails.error && (  
         <ProductCard data={data} cartDetails={cartDetails}/>
       )}
     </div>

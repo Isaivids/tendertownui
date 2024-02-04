@@ -1,45 +1,14 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import beverage from "../../assets/juice.svg";
 import "./SideBar.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategory } from "../../store/slice/category";
 import { AppDispatch } from "../../store/store";
+import Shimmer from "../shimmer/Shimmer";
+import { Message } from 'primereact/message';
+        
 const SideBar = () => {
-  // const data = [
-  //   {
-  //     image: beverage,
-  //     text: "Juice",
-  //   },
-  //   {
-  //     image: beverage,
-  //     text: "Ice",
-  //   },
-  //   {
-  //     image: beverage,
-  //     text: "Mojito",
-  //   },
-  //   {
-  //     image: beverage,
-  //     text: "Snacks",
-  //   },
-  //   {
-  //     image: beverage,
-  //     text: "Waffle",
-  //   },
-  //   {
-  //     image: beverage,
-  //     text: "Sandwich",
-  //   },
-  //   {
-  //     image: beverage,
-  //     text: "Maggie",
-  //   },
-  //   {
-  //     image: beverage,
-  //     text: "Hot Drinks",
-  //   },
-  // ];
   const [data, setData] = useState([])
   const categoryDetails = useSelector((state: any) => state.categoryDetals);
   const dispatch = useDispatch<AppDispatch>();
@@ -53,6 +22,10 @@ const SideBar = () => {
     }
   }, [dispatch]);
 
+  const navLinkProps = {
+    activeclassname: 'active-link',
+  };
+
   useEffect(() => {
     const fetchDataAndLog = async () => {
       await fetchData();
@@ -62,8 +35,8 @@ const SideBar = () => {
 
   return (
     <div className="left-sidebar p-3">
-    {(categoryDetails.loading) && 'Loading'}
-    {(categoryDetails.error) && 'Error'}
+    {(categoryDetails.loading) && <Shimmer count={6}/>}
+    {(categoryDetails.error) && <Message severity="error" text="Unable to fetch Data" />}
       {data.length > 0 &&
         data.map((x: any, index: number) => {
           return (
@@ -72,9 +45,9 @@ const SideBar = () => {
               className="flex p-2 surface-0 flex-column mb-3 shadow-1 border-round-md"
             >
               <img src={x.image || beverage} alt={x.name} />
-              <Link to={`/list/${x.name}`} className="text-center	">
+              <NavLink {...navLinkProps} to={`/list/${x.name}`} className="text-center	">
                 {x.name}
-              </Link>
+              </NavLink>
             </div>
           );
         })}

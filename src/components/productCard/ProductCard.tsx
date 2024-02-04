@@ -62,8 +62,8 @@ const ProductCard = ({ data,cartDetails }: any) => {
                 <Button label="Add to Cart" className="secondary" onClick={()=> addItemToCart(x)}/>
                 {getCountById(x._id) !== 0 && (
                   <Badge
+                    className="badge"
                     value={getCountById(x._id)}
-                    className="p-badge-secondary"
                   />
                 )}
               </div>

@@ -1,6 +1,6 @@
 .left-sidebar,.cart {
   background: #f0f0f0;
-  min-height: calc(100vh - 60px);
+  max-height: calc(100vh - 60px);
   overflow-y: auto;
   scrollbar-width: none;
   scrollbar-color: transparent transparent;
@@ -12,6 +12,10 @@
   &::-webkit-scrollbar-thumb {
     background-color: transparent;
   }
+}
+
+.cart{
+  background-color: #fff;
 }
 
 .main-content {
