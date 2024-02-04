@@ -1,6 +1,6 @@
 .left-sidebar,.cart {
   background: #f0f0f0;
-  height: calc(100vh - 60px);
+  min-height: calc(100vh - 60px);
   overflow-y: auto;
   scrollbar-width: none;
   scrollbar-color: transparent transparent;
@@ -26,6 +26,10 @@ $secondary-color : #016533;
 }
 .scy{
   color: $secondary-color;
+}
+
+.secondary{
+  background-color: $secondary-color;
 }
 
 a{

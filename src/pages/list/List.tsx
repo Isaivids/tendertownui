@@ -11,6 +11,7 @@ const List = () => {
   const [data, setData] = useState<any>([]);
   const productDetails = useSelector((state: any) => state.productDetaild);
   const dispatch = useDispatch<AppDispatch>();
+  const cartDetails = useSelector((state: any) => state.cartDetails);
 
   const fetchData = useCallback(async () => {
     try {
@@ -28,15 +29,14 @@ const List = () => {
     };
     fetchDataAndLog();
   }, [fetchData, params.id]);
-
-
+  
   return (
     <div>
       {productDetails.loading && "Loadingg"}
       {productDetails.error && "error in loading data"}
       Here's your {pageName}
-      {!productDetails.loading && !productDetails.error && (
-        <ProductCard data={data} />
+      {!productDetails.loading && !productDetails.error && !cartDetails.loading && !cartDetails.error && (
+        <ProductCard data={data} cartDetails={cartDetails}/>
       )}
     </div>
   );

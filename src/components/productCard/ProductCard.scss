@@ -1,27 +1,47 @@
-.productCard{
+// .productCard{
+//     width: 200px;
+//     display: flex;
+//     justify-content: center;
+//     .p-card {
+//         background: #ffffff;
+//         color: #212529;
+//         box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+//         border-radius: 6px;
+//     }
+//     .p-card-header{
+//         display: flex;
+//         justify-content: center;
+//         align-items: center;
+//         width: 200px;
+//         height: 200px;
+//         object-fit: cover;
+//         padding: 10px;
+//         img {
+//             height: 160px;
+//             object-fit: contain;
+//         }
+//     }
+//     .p-card-body{
+//         padding: 10px;
+//     }
+// }
+
+.card{
     width: 200px;
-    display: flex;
-    justify-content: center;
-    .p-card {
-        background: #ffffff;
-        color: #212529;
-        box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
-        border-radius: 6px;
-    }
-    .p-card-header{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 200px;
+    .image-cont{
         height: 200px;
-        object-fit: cover;
-        padding: 10px;
-        img {
-            height: 160px;
-            object-fit: contain;
+        width: 200px;
+        object-fit: contain;
+        img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
     }
-    .p-card-body{
-        padding: 10px;
+    .details{
+
+    }
+    .name{
+
     }
 }
