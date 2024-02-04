@@ -5,7 +5,7 @@ import "./ProductCard.scss";
 import "../../App.scss";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store/store";
-import { addToCart, addToCartReducer } from "../../store/slice/cart";
+import { addToCartReducer } from "../../store/slice/cart";
 const ProductCard = ({ data,cartDetails }: any) => {
   const dispatch = useDispatch<AppDispatch>();
 

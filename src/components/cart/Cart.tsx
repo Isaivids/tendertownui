@@ -5,7 +5,7 @@ import { Button } from 'primereact/button';
 import "../../App.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../store/store";
-import { changeCount, clearCart, deleteOneCartItem, getCartItems, removeItem, removeOneItem} from "../../store/slice/cart";
+import { changeCount, clearCart, getCartItems, removeOneItem} from "../../store/slice/cart";
 import { IoMdRemoveCircleOutline } from "react-icons/io";
 
 const Cart = () => {
