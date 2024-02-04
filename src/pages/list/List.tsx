@@ -38,6 +38,7 @@ const List = () => {
 
   return (
     <div>
+      <span className="p-2">Here's your {pageName}</span>
       {productDetails.loading && <PieLoader />}
       {productDetails.error && <Message severity="error" text="Unable to fetch Data" />}
       {!productDetails.loading && !productDetails.error && !cartDetails.loading && !cartDetails.error && (  
