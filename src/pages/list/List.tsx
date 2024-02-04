@@ -31,10 +31,7 @@ const List = () => {
       await fetchData();
     };
     fetchDataAndLog();
-    return () => {
-      dispatch(clearCart());
-    };
-  }, [dispatch, fetchData, params.id]);
+  }, [fetchData, params.id]);
 
   return (
     <div>
