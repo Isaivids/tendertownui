@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import "./Cart.scss";
 import { Button } from "primereact/button";
@@ -12,11 +12,23 @@ import {
   removeOneItem,
 } from "../../store/slice/cart";
 import { IoClose } from "react-icons/io5";
+import { Dialog } from "primereact/dialog";
+import { ImPrinter } from "react-icons/im";
+import ReactToPrint from "react-to-print";
 
 const Cart = () => {
   const [data, setData] = useState<any>([]);
   const cartDetails = useSelector((state: any) => state.cartDetails);
   const dispatch = useDispatch<AppDispatch>();
+  const [visible, setVisible] = useState(false);
+  const companyDetails = {
+    companyName: "Pollachi Tender Town",
+    address:
+      "114D/170, Mount Poonamallee Road,MP Road, Porur, Chennai - 600116",
+    gst: "33BWDPV3834K1Z7",
+    phone: "+91 9940124094",
+  };
+
   const fetchData = useCallback(async () => {
     try {
       const cart = await dispatch(getCartItems({ userId: "user123" }));
@@ -70,9 +82,66 @@ const Cart = () => {
       setData(cartDetails.body.data);
     }
   }, [cartDetails]);
+  const invoiceRef:any = useRef();
+  const Header = () => {
+    return (
+      <div className="flex gap-2 align-items-center">
+        Receipt
+        <ReactToPrint
+          trigger={() => <ImPrinter className="cursor-pointer" />}
+          content={() => invoiceRef.current} // Use ref here
+        />
+      </div>
+    );
+  };
+  const BasicDemo = () => {
+    return (
+      <div className="card flex justify-content-center">
+        <Dialog
+          header={<Header />}
+          visible={visible}
+          style={{ width: "50vw" }}
+          onHide={() => setVisible(false)}
+        >
+          <div ref={invoiceRef} className="p-2 border-1">
+            <div>
+              <h4>{companyDetails.companyName}</h4>
+              <p>ADDRESS : {companyDetails.address}</p>
+              <p>GST : {companyDetails.gst}</p>
+              <p>PHONE : {companyDetails.phone}</p>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Quantity</th>
+                  <th>Price</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.map((item: any, index: number) => (
+                  <tr key={index}>
+                    <td>{item.name}</td>
+                    <td>{item.count}</td>
+                    <td>₹ {item.price.toFixed(2)}</td>
+                    <td>₹ {(item.count * item.price).toFixed(2)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div>
+              <strong>Total Amount:</strong> ₹ {cartDetails.total}
+            </div>
+          </div>
+        </Dialog>
+      </div>
+    );
+  };
 
   return (
     <div className="cart">
+      {visible && <BasicDemo />}
       {cartDetails.loading && "Loadingg"}
       {cartDetails.error && "error in loading data"}
       <div className="h-full content">
@@ -81,12 +150,18 @@ const Cart = () => {
         </div>
         <div className="overflow-container">
           <div className="flex justify-content-center gap-1">
-          <Button
-            severity="danger"
-            label="Clear"
-            onClick={() => clearCartData()}
-          />
-          <Button label="Checkout" severity="secondary" />
+            <Button
+              severity="danger"
+              label="Clear"
+              disabled={data.length < 1}
+              onClick={() => clearCartData()}
+            />
+            <Button
+              label="Checkout"
+              severity="secondary"
+              disabled={data.length < 1}
+              onClick={() => setVisible(true)}
+            />
           </div>
           {data &&
             data.length > 0 &&
@@ -95,7 +170,9 @@ const Cart = () => {
                 key={index}
                 className="flex m-3 align-items-center gap-2 p-2 surface-0 flex-column mb-3 shadow-1"
               >
-                <span className="text-color	">{item.name} - <b>₹{item.price * item.count}</b></span>
+                <span className="text-color	">
+                  {item.name} - <b>₹{item.price * item.count}</b>
+                </span>
                 <div className="flex gap-3">
                   <FaMinus
                     className="btn"
@@ -111,14 +188,17 @@ const Cart = () => {
                     className="btn"
                     onClick={() => changeCountValue(item, "increase")}
                   />
-                  <IoClose className="text-danger"  onClick={() => deleteOneCartItemFromCart(item)}/>
+                  <IoClose
+                    className="text-danger"
+                    onClick={() => deleteOneCartItemFromCart(item)}
+                  />
                 </div>
               </div>
             ))}
         </div>
         <div className="bg-primary flex p-3 gap-1 justify-content-center">
           <span className="font-bold text-center text-lg">
-            ₹{cartDetails.total}
+            ₹{data.length > 0 ? cartDetails.total : 0}
           </span>
         </div>
       </div>
