@@ -58,6 +58,14 @@ export const removeItem = createAsyncThunk('removeItem', async (body: any) => {
     return response.data;
 })
 
+export const addMultipleItems = createAsyncThunk('addMultipleItems', async (body: any) => {
+    const response = await apiCall.post(`/addMultipleItems`, body);
+    if (response.data.error) {
+        throw new Error("Error message");
+    }
+    return response.data;
+})
+
 const calculateTotal = (items: any[]): number => {
     return items.reduce((total, item) => total + item.price * item.count, 0);
 };
@@ -147,6 +155,15 @@ const cartSlice = createSlice({
         })
         builder.addCase(removeItem.rejected, (state) => {
             return { ...state, loading: false, error: true }
+        })
+        builder.addCase(addMultipleItems.pending, (state) => {
+            return { ...state, aLoading: true }
+        })
+        builder.addCase(addMultipleItems.fulfilled, (state, { payload }) => {
+            return { ...state, body: payload, aError: false, aLoading: false }
+        })
+        builder.addCase(addMultipleItems.rejected, (state) => {
+            return { ...state, aLoading: false, aError: true }
         })
     }
 })
