@@ -41,7 +41,7 @@ const ProductCard = ({ data,cartDetails }: any) => {
   }
 
   return (
-    <div className="productCard p-2 flex gap-2 flex-wrap justify-content-between">
+    <div className="productCard p-2 flex gap-2 flex-wrap justify-content-center">
       {data.length > 0 &&
         data.map((x: any, index: any) => {
           return (

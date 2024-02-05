@@ -9,18 +9,26 @@ import Shimmer from "../shimmer/Shimmer";
 import { Message } from 'primereact/message';
         
 const SideBar = () => {
-  const [data, setData] = useState([])
+  const [data, setData]:any = useState([])
   const categoryDetails = useSelector((state: any) => state.categoryDetals);
   const dispatch = useDispatch<AppDispatch>();
 
   const fetchData = useCallback(async () => {
     try {
       const categories = await dispatch(getCategory());
-      setData(categories.payload?.data);
+      const categoryData = categories.payload?.data;
+      const all = {
+        name: 'All',
+        image: '',
+        categoryId: 'all'
+      };
+  
+      setData([all, ...categoryData]);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }, [dispatch]);
+  
 
   const navLinkProps = {
     activeclassname: 'active-link',
@@ -45,7 +53,7 @@ const SideBar = () => {
               className="flex p-2 surface-0 flex-column mb-3 shadow-1 border-round-md"
             >
               <img src={x.image || beverage} alt={x.name} />
-              <NavLink {...navLinkProps} to={`/list/${x.name}`} className="text-center	">
+              <NavLink {...navLinkProps} to={`/list/${x.categoryId}`} className="text-center	">
                 {x.name}
               </NavLink>
             </div>

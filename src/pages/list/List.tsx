@@ -17,12 +17,12 @@ const List = () => {
 
   const fetchData = useCallback(async () => {
     try {
-      const categories = await dispatch(getProducts({ category: "" }));
+      const categories = await dispatch(getProducts({ category: params.id === 'all' ? '' : params.id }));
       setData(categories.payload?.data);
     } catch (error) {
       console.log(error);
     }
-  }, [dispatch]);
+  }, [dispatch, params.id]);
 
   useEffect(() => {
     setPageName(params.id);
@@ -34,7 +34,6 @@ const List = () => {
 
   return (
     <div>
-      <span className="p-2">Here's your {pageName}</span>
       {productDetails.loading && <PieLoader />}
       {productDetails.error && <Message severity="error" text="Unable to fetch Data" />}
       {!productDetails.loading && !productDetails.error && !cartDetails.loading && !cartDetails.error && (  
