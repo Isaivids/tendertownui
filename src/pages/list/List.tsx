@@ -9,6 +9,7 @@ import { Message } from "primereact/message";
 
 const List = () => {
   const params: any = useParams();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [pageName, setPageName] = useState<any>();
   const [data, setData] = useState<any>([]);
   const productDetails = useSelector((state: any) => state.productDetaild);

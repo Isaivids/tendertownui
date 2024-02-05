@@ -1,5 +1,4 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
-import { apiCall } from '../../api/api';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface State {
     body: any,
