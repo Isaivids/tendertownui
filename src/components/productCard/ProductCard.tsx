@@ -6,7 +6,7 @@ import "../../App.scss";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store/store";
 import { addToCartReducer } from "../../store/slice/cart";
-const ProductCard = ({ data,cartDetails }: any) => {
+const ProductCard = ({ data,cartDetails,userDetails }: any) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const getCountById = (targetProductId: string): number => {
@@ -27,7 +27,7 @@ const ProductCard = ({ data,cartDetails }: any) => {
 
   const addItemToCart = async (data:any) =>{
     const body:any = {
-      userId: "user123",
+      userId: userDetails.selectedUser.name,
       productId: data._id,
       name: data.name,
       price: data.amount,
@@ -59,13 +59,8 @@ const ProductCard = ({ data,cartDetails }: any) => {
                 <span> ₹ - {x.amount}</span>
               </div>
               <div className="button p-2">
+                {getCountById(x._id)}
                 <Button label="Add to Cart" className="secondary" onClick={()=> addItemToCart(x)}/>
-                {getCountById(x._id) !== 0 && (
-                  <Badge
-                    className="badge"
-                    value={getCountById(x._id)}
-                  />
-                )}
               </div>
             </div>
           );

@@ -37,13 +37,13 @@ const Cart = () => {
   const fetchData = useCallback(async () => {
     try {
       const cart = await dispatch(
-        getCartItems({ userId: userDetails.body.data.table })
+        getCartItems({ userId: userDetails.selectedUser._id })
       );
       setData(cart.payload?.data);
     } catch (error) {
       console.log(error);
     }
-  }, [dispatch, userDetails.body.data.table]);
+  }, [dispatch, userDetails.selectedUser._id]);
 
   const changeCountValue = async (data: any, type: string) => {
     const body: any = {
@@ -79,10 +79,10 @@ const Cart = () => {
 
   useEffect(() => {
     const fetchDataAndLog = async () => {
-      await fetchData();
+      userDetails && await fetchData();
     };
     fetchDataAndLog();
-  }, [fetchData]);
+  }, [fetchData, userDetails]);
 
   useEffect(() => {
     if (cartDetails.body.data) {
@@ -103,7 +103,7 @@ const Cart = () => {
   };
 
   const getRandomBillNumber = () => {
-    const userId = userDetails.body.data.table;
+    const userId = userDetails.selectedUser.name;
     const currentDate = new Date();
     const timestamp = currentDate.getTime();
     const combinedValue = timestamp + userId;
@@ -171,7 +171,7 @@ const Cart = () => {
         return rest;
       });
       const body = {
-        userId: userDetails.body.data.table.toString(),
+        userId: userDetails.selectedUser._id,
         products: newArray,
       };
       const cart = await dispatch(addMultipleItems(body));
@@ -188,10 +188,10 @@ const Cart = () => {
       {(cartDetails.error || cartDetails.aError) && (
         <Message severity="error" text="Unable to fetch Data" />
       )}
-      {!cartDetails.loading &&
+      {(!cartDetails.loading &&
         !cartDetails.aLoading &&
         !cartDetails.error &&
-        !cartDetails.aError && (
+        !cartDetails.aError && userDetails.selectedUser.name) && (
           <div className="h-full content">
             <div className="pmy flex p-3 gap-1 justify-content-center">
               <span className="font-bold text-center text-lg">Bill</span>

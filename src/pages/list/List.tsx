@@ -9,10 +9,10 @@ import { Message } from "primereact/message";
 
 const List = () => {
   const params: any = useParams();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [pageName, setPageName] = useState<any>();
   const [data, setData] = useState<any>([]);
   const productDetails = useSelector((state: any) => state.productDetaild);
+  const userDetails = useSelector((state: any) => state.userDetails);
   const dispatch = useDispatch<AppDispatch>();
   const cartDetails = useSelector((state: any) => state.cartDetails);
 
@@ -35,10 +35,11 @@ const List = () => {
 
   return (
     <div>
+      {!userDetails.selectedUser.name && <Message className="m-2" severity="error" text="Select a table to get Data" />}
       {productDetails.loading && <PieLoader />}
       {productDetails.error && <Message severity="error" text="Unable to fetch Data" />}
-      {!productDetails.loading && !productDetails.error && !cartDetails.loading && !cartDetails.error && (  
-        <ProductCard data={data} cartDetails={cartDetails}/>
+      {(!productDetails.loading && !productDetails.error && !cartDetails.loading && !cartDetails.error && userDetails.selectedUser.name) && (  
+        <ProductCard data={data} cartDetails={cartDetails} userDetails={userDetails}/>
       )}
     </div>
   );

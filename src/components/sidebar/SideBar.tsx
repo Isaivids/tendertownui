@@ -12,6 +12,7 @@ const SideBar = () => {
   const [data, setData]:any = useState([])
   const categoryDetails = useSelector((state: any) => state.categoryDetals);
   const dispatch = useDispatch<AppDispatch>();
+  const userDetails = useSelector((state: any) => state.userDetails);
 
   const fetchData = useCallback(async () => {
     try {
@@ -45,7 +46,7 @@ const SideBar = () => {
     <div className="left-sidebar p-3">
     {(categoryDetails.loading) && <Shimmer count={6}/>}
     {(categoryDetails.error) && <Message severity="error" text="Unable to fetch Data" />}
-      {data.length > 0 &&
+      {userDetails.selectedUser.name && data.length > 0 &&
         data.map((x: any, index: number) => {
           return (
             <div
