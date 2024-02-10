@@ -1,6 +1,5 @@
 import React from "react";
 import { Button } from "primereact/button";
-import { Badge } from "primereact/badge";
 import "./ProductCard.scss";
 import "../../App.scss";
 import { useDispatch } from "react-redux";
