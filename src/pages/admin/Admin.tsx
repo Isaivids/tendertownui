@@ -15,15 +15,15 @@ function Sidebar({ isOpen, toggleSidebar }: any) {
         </button>
       </div>
       <div className="flex flex-column font-semibold text-base text-green-700 mt-3">
-        <NavLink to="/admin/products" className="flex gap-2 align-items-center navlinks">
+        <NavLink to="/admin/products" className={({ isActive }) => isActive ? 'activelink flex gap-2 align-items-center navlinks' : 'flex gap-2 align-items-center navlinks'}>
           <BiSolidDrink />
           <span className={isOpen ? "" : "hidden"}>Products</span>
         </NavLink>
-        <NavLink to="/admin/categories" className="flex gap-2 align-items-center navlinks">
+        <NavLink to="/admin/categories" className={({ isActive }) => isActive ? 'activelink flex gap-2 align-items-center navlinks' : 'flex gap-2 align-items-center navlinks'}>
           <BiCategoryAlt />
           <span className={isOpen ? "" : "hidden"}>Categories</span>
         </NavLink>
-        <NavLink to="/admin/users" className="flex gap-2 align-items-center navlinks">
+        <NavLink to="/admin/users" className={({ isActive }) => isActive ? 'activelink flex gap-2 align-items-center navlinks' : 'flex gap-2 align-items-center navlinks'}>
           <FaUser />
           <span className={isOpen ? "" : "hidden"}>User</span>
         </NavLink>

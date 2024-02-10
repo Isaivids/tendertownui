@@ -30,11 +30,6 @@ const SideBar = () => {
     }
   }, [dispatch]);
   
-
-  const navLinkProps = {
-    activeclassname: 'active-link',
-  };
-
   useEffect(() => {
     const fetchDataAndLog = async () => {
       await fetchData();
@@ -49,15 +44,16 @@ const SideBar = () => {
       {userDetails.selectedUser.name && data.length > 0 &&
         data.map((x: any, index: number) => {
           return (
-            <div
+            <NavLink
+              to={`/list/${x.categoryId}`}
               key={index}
-              className="flex p-2 surface-0 flex-column mb-3 shadow-1 border-round-md"
+              className={({ isActive }) => isActive ? 'active-link flex p-2 flex-column mb-3 shadow-1 border-round-md' : 'flex p-2 surface-0 flex-column mb-3 shadow-1 border-round-md'}
             >
               <img src={x.image || beverage} alt={x.name} />
-              <NavLink {...navLinkProps} to={`/list/${x.categoryId}`} className="text-center	">
+              <span className="text-center">
                 {x.name}
-              </NavLink>
-            </div>
+              </span>
+            </NavLink>
           );
         })}
     </div>

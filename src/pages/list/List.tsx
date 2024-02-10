@@ -9,7 +9,6 @@ import { Message } from "primereact/message";
 
 const List = () => {
   const params: any = useParams();
-  const [pageName, setPageName] = useState<any>();
   const [data, setData] = useState<any>([]);
   const productDetails = useSelector((state: any) => state.productDetaild);
   const userDetails = useSelector((state: any) => state.userDetails);
@@ -26,7 +25,7 @@ const List = () => {
   }, [dispatch, params.id]);
 
   useEffect(() => {
-    setPageName(params.id);
+    // setPageName(params.id);
     const fetchDataAndLog = async () => {
       await fetchData();
     };
