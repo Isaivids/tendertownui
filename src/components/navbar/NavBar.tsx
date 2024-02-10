@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaUser } from "react-icons/fa";
 import "../../App.scss";
 import logo from "../../assets/logo.png";
 import "./NavBar.scss";
