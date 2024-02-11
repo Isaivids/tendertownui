@@ -22,6 +22,14 @@ export const getUsers = createAsyncThunk('getUsers', async () => {
     return response.data;
 })
 
+export const changeActive = createAsyncThunk('changeActive', async (body:any) => {
+    const response = await apiCall.put(`/changeActive`,body);
+    if (response.data.error) {
+        throw new Error("Error message");
+    }
+    return response.data;
+})
+
 const UserSlice = createSlice({
     initialState,
     name: 'user',
@@ -49,6 +57,15 @@ const UserSlice = createSlice({
             return { ...state, body: payload, error: false, loading: false }
         })
         builder.addCase(getUsers.rejected, (state) => {
+            return { ...state, loading: false, error: true }
+        })
+        builder.addCase(changeActive.pending, (state, _payload) => {
+            return { ...state, loading: true }
+        })
+        builder.addCase(changeActive.fulfilled, (state, { payload }) => {
+            return { ...state, body: payload, error: false, loading: false }
+        })
+        builder.addCase(changeActive.rejected, (state) => {
             return { ...state, loading: false, error: true }
         })
     }

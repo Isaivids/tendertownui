@@ -18,15 +18,19 @@ import { ImPrinter } from "react-icons/im";
 import ReactToPrint from "react-to-print";
 import Shimmer from "../shimmer/Shimmer";
 import { Message } from "primereact/message";
-
+import logo from '../../assets/logo.png'
+import { changeActive, clearSelectedUser } from "../../store/slice/user";
 const Cart = () => {
+  const now = new Date();
+  const formattedDate = now.toLocaleDateString('en-US');
+  const formattedTime = now.toLocaleTimeString('en-US');
   const [data, setData] = useState<any>([]);
   const cartDetails = useSelector((state: any) => state.cartDetails);
   const userDetails = useSelector((state: any) => state.userDetails);
   const dispatch = useDispatch<AppDispatch>();
   const [visible, setVisible] = useState(false);
   const companyDetails = {
-    companyName: "Pollachi Tender Town",
+    companyName: "Tender Town",
     address:
       "114D/170, Mount Poonamallee Road,MP Road, Porur, Chennai - 600116",
     gst: "33BWDPV3834K1Z7",
@@ -96,17 +100,25 @@ const Cart = () => {
         Receipt
         <ReactToPrint
           trigger={() => <ImPrinter className="cursor-pointer" />}
-          content={() => invoiceRef.current} // Use ref here
+          content={() => invoiceRef.current}
+          onAfterPrint = {() => changeActiveStatus()}
         />
       </div>
     );
   };
 
+  const changeActiveStatus = async() =>{
+    const rs = await dispatch(changeActive({tableId : userDetails.selectedUser._id, active : false}));
+    if(rs.payload.status){
+      setVisible(false);
+      dispatch(clearSelectedUser());
+    }
+  }
+
   const getRandomBillNumber = () => {
-    const userId = userDetails.selectedUser.name;
     const currentDate = new Date();
     const timestamp = currentDate.getTime();
-    const combinedValue = timestamp + userId;
+    const combinedValue = timestamp + 100;
     setBillNumber(combinedValue);
   };
 
@@ -125,18 +137,28 @@ const Cart = () => {
           onHide={() => setVisible(false)}
         >
           <div ref={invoiceRef} className="p-2 border-1">
-            <div>
-              <h4>{companyDetails.companyName}</h4>
-              <p>ADDRESS : {companyDetails.address}</p>
-              <p>GST : {companyDetails.gst}</p>
-              <p>PHONE : {companyDetails.phone}</p>
-              <p>BILL NUMBER : {billNumber}</p>
+            <div className="flex flex-column text-center">
+              <div className="flex justify-content-center">
+                <img src={logo} alt="TenderTown" style={{width : '80px'}}/>
+              </div>
+              <span className="font-semibold text-xl">{companyDetails.companyName}</span>
+              <span className="text-sm">{companyDetails.address}</span>
+              <span className="text-sm">GST IN : {companyDetails.gst}</span>
+              <span className="text-sm">PHONE : {companyDetails.phone}</span>
             </div>
+            <hr style={{ borderTop: '2px dashed black'}}/>
+            <div className="flex justify-content-between my-2">
+              <span>Bill No : {billNumber}</span>
+              <span>Date : {formattedDate}</span>
+              <span>Time : {formattedTime}</span>
+            </div>
+            <hr style={{ borderTop: '2px dashed black'}}/>
             <table>
               <thead>
                 <tr>
                   <th>Item</th>
                   <th>Quantity</th>
+                  <th>GST</th>
                   <th>Price</th>
                   <th>Total</th>
                 </tr>
@@ -146,14 +168,21 @@ const Cart = () => {
                   <tr key={index}>
                     <td>{item.name}</td>
                     <td>{item.count}</td>
+                    <td>{item.gst}</td>
                     <td>₹ {item.price.toFixed(2)}</td>
                     <td>₹ {(item.count * item.price).toFixed(2)}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
-            <div>
+            <hr style={{ borderTop: '2px dashed black'}}/>
+            <div className="flex justify-content-end">
               <strong>Total Amount:</strong> ₹ {cartDetails.total}
+            </div>
+            <hr style={{ borderTop: '2px dashed black'}}/>
+            <div className="flex text-center flex-column">
+              <span>Thank you for choosing Tender Town! </span>
+              <span>Visit again soon.😀</span>
             </div>
           </div>
         </Dialog>
@@ -192,7 +221,7 @@ const Cart = () => {
         !cartDetails.aLoading &&
         !cartDetails.error &&
         !cartDetails.aError && userDetails.selectedUser.name) && (
-          <div className="h-full m-2 content surface-ground">
+          <div className="h-full content surface-ground">
             <div className="pmy flex p-3 gap-1 justify-content-center">
               <span className="font-bold text-center text-lg">Bill</span>
             </div>
