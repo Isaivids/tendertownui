@@ -192,7 +192,7 @@ const Cart = () => {
         !cartDetails.aLoading &&
         !cartDetails.error &&
         !cartDetails.aError && userDetails.selectedUser.name) && (
-          <div className="h-full content">
+          <div className="h-full m-2 content surface-ground">
             <div className="pmy flex p-3 gap-1 justify-content-center">
               <span className="font-bold text-center text-lg">Bill</span>
             </div>

@@ -17,3 +17,13 @@
   background-color: $secondary-color;
   color: #fff;
 }
+
+.cat{
+  background-color: $primary-color;
+}
+
+.cat:hover{
+  transition: all 0.2s ease-in-out;
+  background-color: $secondary-color;
+  color: #fff;
+}

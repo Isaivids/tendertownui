@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import beverage from "../../assets/juice.svg";
+import logo from '../../assets/logo.png'
 import "./SideBar.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategory } from "../../store/slice/category";
@@ -38,7 +39,7 @@ const SideBar = () => {
   }, [fetchData]);
 
   return (
-    <div className="left-sidebar p-3">
+    <div className="left-sidebar surface-ground p-3">
     {(categoryDetails.loading) && <Shimmer count={6}/>}
     {(categoryDetails.error) && <Message severity="error" text="Unable to fetch Data" />}
       {userDetails.selectedUser.name && data.length > 0 &&
@@ -47,9 +48,9 @@ const SideBar = () => {
             <NavLink
               to={`/list/${x.categoryId}`}
               key={index}
-              className={({ isActive }) => isActive ? 'active-link flex p-2 flex-column mb-3 shadow-1 border-round-md' : 'flex p-2 surface-0 flex-column mb-3 shadow-1 border-round-md'}
+              className={({ isActive }) => isActive ? 'active-link flex p-2 flex-column mb-3 shadow-1 border-round-md' : 'flex p-2 cat flex-column mb-3 shadow-1 border-round-md'}
             >
-              <img src={x.image || beverage} alt={x.name} />
+              <img src={x.image || logo} alt={x.name} />
               <span className="text-center">
                 {x.name}
               </span>

@@ -34,19 +34,38 @@ const Products = () => {
     photo: "",
     category: null,
   });
-  const [edit, setEdit]:any = useState({});
-  const [file, setfile] = useState({name : '', file : '', error : ''});
+  const [edit, setEdit]: any = useState({});
+  const [file, setfile] = useState({ name: "", file: "", error: "" });
 
-  const handleSubmit = async (type:any) => {
+  const handleSubmit = async (type: any) => {
     try {
-      if(type === 'add'){
-        await dispatch(createProduct(product));
-        await fetchData();
-      }else{
-        let body:any = product;
-        body['id'] = edit._id;
-        await dispatch(updateProduct(body));
-        await fetchData();
+      if (type === "add") {
+        const body = {
+          name: product.name,
+          description: product.description,
+          photo: product.photo,
+          amount: Number(product.amount),
+          category: product.category,
+          gst: Number(product.gst),
+        };
+        const rs:any = await dispatch(createProduct(body));
+        if(rs.payload.status && !productDetails.body.loading){
+          setData(rs.payload.data);
+        }
+      } else {
+        const body = {
+          name: product.name,
+          description: product.description,
+          photo: product.photo,
+          amount: Number(product.amount),
+          category: product.category,
+          gst: Number(product.gst),
+          id: edit._id,
+        };
+        const rs:any = await dispatch(updateProduct(body));
+        if(rs.payload.status && !productDetails.body.loading){
+          setData(rs.payload.data);
+        }
       }
     } catch (error) {
       console.log(error);
@@ -163,10 +182,12 @@ const Products = () => {
 
   const deleteProductOne = async (options: any) => {
     try {
-      await dispatch(deleteProduct({ id: options._id }));
-      await fetchData();
+      const rs = await dispatch(deleteProduct({ id: options._id }));
+      if (rs.payload.status && !categoryDetails.body.loading) {
+        setData(rs.payload.data);
+      }
     } catch (error) {
-      console.error("Error deleting product:", error);
+    console.error("Error deleting product:", error);
     }
   };
 
@@ -180,74 +201,76 @@ const Products = () => {
       const reader = new FileReader();
       reader.onload = () => {
         const base64data: any = reader.result;
-        setfile({...file, file : base64data,name : selectedFile.name});
+        setfile({ ...file, file: base64data, name: selectedFile.name });
       };
 
       reader.readAsDataURL(selectedFile);
     } else {
       event.target.value = null;
-      setfile({...file, error : 'Upload only Excel file'})
+      setfile({ ...file, error: "Upload only Excel file" });
     }
   };
 
-  const uploadFile = async() => {
+  const uploadFile = async () => {
     try {
-      await dispatch(addFromExcel({excel : file.file.split(',')[1]}));
+      await dispatch(addFromExcel({ excel: file.file.split(",")[1] }));
       await fetchData();
-      setfile({name : '', file : '', error : ''})
+      setfile({ name: "", file: "", error: "" });
     } catch (error) {
-      console.log('error');
+      console.log("error");
     }
   };
 
   return (
     <div>
       {(categoryDetails.loading || productDetails.loading) && <PieLoader />}
-      {(!categoryDetails.loading && !categoryDetails.error && !productDetails.loading) && (
-        <div className="w-full p-3">
-          <div className="flex justify-content-between">
-            <Button
-              label="Add Product"
-              severity="success"
-              onClick={() => showDialog("add", {})}
-            />
-            <div className="flex gap-2">
-              {file.error && <span>{file.error}</span>}
-              {file.name && <span>{file.name}</span>}
-              <input
-                id="upload-input"
-                type="file"
-                onChange={customBase64Uploader}
-                className="hidden"
-              />
-              <label
-                htmlFor="upload-input"
-                className="bg-primary border-primary-500 px-3 py-2 text-base border-1 border-solid border-round cursor-pointer transition-all transition-duration-200 hover:bg-primary-600 hover:border-primary-600 active:bg-primary-700 active:border-primary-700"
-              >
-                <FaUpload />
-              </label>
+      {!categoryDetails.loading &&
+        !categoryDetails.error &&
+        !productDetails.loading && (
+          <div className="w-full p-3">
+            <div className="flex justify-content-between">
               <Button
-                label="Upload"
-                severity="info"
-                onClick={uploadFile}
-                disabled={!file}
+                label="Add Product"
+                severity="success"
+                onClick={() => showDialog("add", {})}
               />
+              <div className="flex gap-2">
+                {file.error && <span>{file.error}</span>}
+                {file.name && <span>{file.name}</span>}
+                <input
+                  id="upload-input"
+                  type="file"
+                  onChange={customBase64Uploader}
+                  className="hidden"
+                />
+                <label
+                  htmlFor="upload-input"
+                  className="bg-primary border-primary-500 px-3 py-2 text-base border-1 border-solid border-round cursor-pointer transition-all transition-duration-200 hover:bg-primary-600 hover:border-primary-600 active:bg-primary-700 active:border-primary-700"
+                >
+                  <FaUpload />
+                </label>
+                <Button
+                  label="Upload"
+                  severity="info"
+                  onClick={uploadFile}
+                  disabled={!file}
+                />
+              </div>
             </div>
+            <PopUp
+              product={product}
+              setProduct={setProduct}
+              popupvisible={popupvisible}
+              setPopupVisible={setPopupVisible}
+              categoryDetails={categoryDetails}
+              mode={mode}
+              edit={edit}
+              setEdit={setEdit}
+              handleSubmit={handleSubmit}
+            />
+            <DataTableComp />
           </div>
-          <PopUp
-            product={product}
-            setProduct={setProduct}
-            popupvisible={popupvisible}
-            setPopupVisible={setPopupVisible}
-            categoryDetails={categoryDetails}
-            mode={mode}
-            edit={edit}
-            setEdit={setEdit}
-            handleSubmit={handleSubmit}
-          />
-          <DataTableComp />
-        </div>
-      )}
+        )}
     </div>
   );
 };
