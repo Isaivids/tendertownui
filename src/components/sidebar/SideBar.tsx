@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import beverage from "../../assets/juice.svg";
 import logo from '../../assets/logo.png'
 import "./SideBar.scss";
 import { useDispatch, useSelector } from "react-redux";

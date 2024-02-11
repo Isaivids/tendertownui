@@ -17,28 +17,7 @@ const Categories = () => {
   const [data, setData] = useState([]);
   const [edit, setEdit] = useState({});
 
-  const customBase64Uploader = async (event: any) => {
-    const selectedFile = event.target.files[0];
-    if (
-      selectedFile.type ===
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
-      selectedFile.type === "application/vnd.ms-excel"
-    ) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const base64data: any = reader.result;
-        // setfile({ ...file, file: base64data, name: selectedFile.name });
-      };
-
-      reader.readAsDataURL(selectedFile);
-    } else {
-      event.target.value = null;
-      // setfile({ ...file, error: "Upload only Excel file" });
-    }
-  };
-
   const deleteProductOne = async(options:any) =>{
-    console.log(options._id)
     try {
       const rs = await dispatch(deleteCategory({id : options._id}));
       if (rs.payload.status && !categoryDetails.body.loading) {
