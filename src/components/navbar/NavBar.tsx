@@ -95,6 +95,10 @@ const NavBar = () => {
             value={selectedUser}
             onChange={(e: DropdownChangeEvent) => setUser(e)}
             options={data}
+            // options={data && data.map((option:any) => ({
+            //   ...option,
+            //   disabled: option.active
+            // }))}
             optionLabel="name"
             placeholder="Select"
             filter

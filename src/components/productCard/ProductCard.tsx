@@ -1,5 +1,4 @@
 import React from "react";
-import { Button } from "primereact/button";
 import "./ProductCard.scss";
 import "../../App.scss";
 import { useDispatch } from "react-redux";
@@ -73,9 +72,8 @@ const ProductCard = ({ data,cartDetails,userDetails }: any) => {
               <div className="p-0 flex justify-content-between count">
                 <span className="text-center" onClick={()=> addItemToCart(x)}><FaPlus /></span>
                 <span className="text-center" onClick={()=> changeCountValue(x,'decrease')}><FaMinus /></span>
-                {/* {getCountById(x._id)}
-                <Button label="Add to Cart" className="secondary" onClick={()=> addItemToCart(x)}/> */}
               </div>
+              {getCountById(x._id) ? (<span className="badge">{getCountById(x._id)}</span>) : ''}
             </div>
           );
         })}
