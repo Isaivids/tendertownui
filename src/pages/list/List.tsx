@@ -31,7 +31,7 @@ const List = () => {
       setData(products.payload?.data);
       setTotalPage(products.payload.pagination.totalItems)
     } catch (error) {
-      setData([]);
+      console.log('err',error)
     }
   }, [dispatch, page, params.id, rows]);
 
