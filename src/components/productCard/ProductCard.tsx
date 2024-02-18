@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../store/store";
 import { addToCartReducer, changeCount } from "../../store/slice/cart";
 import { FaMinus, FaPlus } from "react-icons/fa";
+import nodata from '../../assets/icons/nodata.svg'
 const ProductCard = ({ data,userDetails }: any) => {
   const dispatch = useDispatch<AppDispatch>();
   const cartDetails = useSelector((state: any) => state.cartDetails);
@@ -77,7 +78,7 @@ const ProductCard = ({ data,userDetails }: any) => {
               {getCountById(x._id) ? (<span className="badge">{getCountById(x._id)}</span>) : ''}
             </div>
           );
-        }) : 'No Data FOund'}
+        }) : <img src={nodata} alt="No Data" style={{width: '30vh'}}/>}
     </div>
   );
 };

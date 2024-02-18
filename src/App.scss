@@ -59,3 +59,8 @@ small{
   margin: 0;
   background: $secondary-color;
 }
+
+.p-checkbox .p-checkbox-box.p-highlight {
+  border-color: $primary-color;
+  background: white;
+}

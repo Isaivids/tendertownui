@@ -50,7 +50,7 @@ const List = () => {
       {(!productDetails.loading && !productDetails.error && userDetails.selectedUser.name) && (  
         <>
           <ProductCard data={data} userDetails={userDetails}/>
-          <Paginator first={first} rows={rows} totalRecords={totalPage} onPageChange={onPageChange} />
+          {data.length > 0 && <Paginator first={first} rows={rows} totalRecords={totalPage} onPageChange={onPageChange} />}
         </>
       )}
     </div>
