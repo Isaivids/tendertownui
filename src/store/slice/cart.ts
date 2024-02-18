@@ -7,6 +7,7 @@ export interface State {
     error: boolean,
     aLoading: boolean,
     aError: boolean
+    gst : boolean
 }
 
 const initialState: State = {
@@ -15,7 +16,8 @@ const initialState: State = {
     loading: false,
     error: false,
     aLoading: false,
-    aError: false
+    aError: false,
+    gst : true
 }
 
 export const getCartItems = createAsyncThunk('getCartItems', async (body: any) => {
@@ -66,8 +68,21 @@ export const addMultipleItems = createAsyncThunk('addMultipleItems', async (body
     return response.data;
 })
 
-const calculateTotal = (items: any[]): number => {
-    return items.reduce((total, item) => total + item.price * item.count, 0);
+const calculateTotal = (items: any[],gst:boolean): number => {
+    let total = 0;
+    if(gst){
+        items.forEach((item) => {
+            let price = item.price;
+            if (item.gst && item.gst > 0) {
+                price += (price * item.gst) / 100;
+            }
+            total += price * item.count;
+        });
+    }else{
+        total = items.reduce((total, item) => total + item.price * item.count, 0);
+    }
+
+    return total;
 };
 
 const cartSlice = createSlice({
@@ -86,7 +101,7 @@ const cartSlice = createSlice({
             } else {
                 state.body.data.push(action.payload);
             }
-            state.total = calculateTotal(state.body.data);
+            state.total = calculateTotal(state.body.data,state.gst);
         },
         changeCount: (state, action: PayloadAction<string>) => {
             const product: any = action.payload;
@@ -102,12 +117,16 @@ const cartSlice = createSlice({
                     }
                 }
             }
-            state.total = calculateTotal(state.body.data);
+            state.total = calculateTotal(state.body.data,state.gst);
         },
         removeOneItem : (state, action:PayloadAction<string>) =>{
             const product: any = action.payload;
             state.body.data = state.body.data.filter((item: any) => item.productId !== product.productId);
-            state.total = calculateTotal(state.body.data);
+            state.total = calculateTotal(state.body.data,state.gst);
+        },
+        changeGST : (state) =>{
+            state.gst = !state.gst;
+            state.total = calculateTotal(state.body.data,state.gst);
         }
     },
     extraReducers: (builder) => {
@@ -167,5 +186,5 @@ const cartSlice = createSlice({
         })
     }
 })
-export const { clearCart, addToCartReducer, changeCount,removeOneItem } = cartSlice.actions;
+export const { clearCart, addToCartReducer, changeCount,removeOneItem,changeGST } = cartSlice.actions;
 export default cartSlice.reducer;

@@ -8,6 +8,7 @@ import { AppDispatch } from "../../store/store";
 import {
   addMultipleItems,
   changeCount,
+  changeGST,
   clearCart,
   getCartItems,
   removeOneItem,
@@ -20,6 +21,8 @@ import Shimmer from "../shimmer/Shimmer";
 import { Message } from "primereact/message";
 import logo from '../../assets/logo.png'
 import { changeActive, clearSelectedUser } from "../../store/slice/user";
+import { Checkbox } from "primereact/checkbox";
+import { useNavigate } from "react-router-dom";
 const Cart = () => {
   const now = new Date();
   const formattedDate = now.toLocaleDateString('en-US');
@@ -29,6 +32,8 @@ const Cart = () => {
   const userDetails = useSelector((state: any) => state.userDetails);
   const dispatch = useDispatch<AppDispatch>();
   const [visible, setVisible] = useState(false);
+  const [checked, setChecked] = useState(false);
+  const navigate = useNavigate();
   const companyDetails = {
     companyName: "Tender Town",
     address:
@@ -39,7 +44,6 @@ const Cart = () => {
   const [billNumber, setBillNumber]: any = useState();
 
   const fetchData = useCallback(async () => {
-    console.log('heree')
     try {
       const cart = await dispatch(
         getCartItems({ userId: userDetails.selectedUser._id })
@@ -82,6 +86,11 @@ const Cart = () => {
     }
   };
 
+  const toggleGST = () =>{
+    setChecked(!checked);
+    dispatch(changeGST());
+  }
+
   useEffect(() => {
     const fetchDataAndLog = async () => {
       userDetails && await fetchData();
@@ -91,6 +100,7 @@ const Cart = () => {
 
   useEffect(() => {
     if (cartDetails.body.data) {
+      setChecked(cartDetails.gst);
       setData(cartDetails.body.data);
     }
   }, [cartDetails]);
@@ -102,7 +112,10 @@ const Cart = () => {
         <ReactToPrint
           trigger={() => <ImPrinter className="cursor-pointer" />}
           content={() => invoiceRef.current}
-          onAfterPrint = {() => changeActiveStatus()}
+          onAfterPrint = {async() => {
+            navigate('/');
+            await changeActiveStatus();
+          }}
         />
       </div>
     );
@@ -124,12 +137,12 @@ const Cart = () => {
   };
 
   const makeDialogVisible = () => {
-    changeActiveStatus();
+    // changeActiveStatus();
     getRandomBillNumber();
     setVisible(true);
   };
 
-  const BasicDemo = () => {
+  const BasicDemo = () => {  
     return (
       <div className="card flex justify-content-center">
         <Dialog
@@ -224,8 +237,11 @@ const Cart = () => {
         !cartDetails.error &&
         !cartDetails.aError && userDetails.selectedUser.name) && (
           <div className="h-full content surface-ground">
-            <div className="pmy flex p-3 gap-1 justify-content-center">
+            <div className="pmy flex p-3 gap-1 justify-content-between">
               <span className="font-bold text-center text-lg">Bill</span>
+              <span className="font-bold text-center text-sm">
+                GST <Checkbox onChange={toggleGST} checked={checked}></Checkbox>
+              </span>
             </div>
             <div className="overflow-container">
               <div className="flex justify-content-center gap-1">

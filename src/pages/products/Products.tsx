@@ -16,7 +16,6 @@ import { MdEditDocument } from "react-icons/md";
 import { RiDeleteBin6Fill } from "react-icons/ri";
 import "./Product.scss";
 import PopUp from "./PopUp";
-import PieLoader from "../../components/pieLoader/PieLoader";
 import { FaUpload } from "react-icons/fa";
 
 const Products = () => {
