@@ -44,3 +44,18 @@ small{
   color: red;
   font-size: 10px;
 }
+
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background: $primary-color;
+  border-color: $primary-color;
+  color: $secondary-color;
+}
+.p-icon{
+  color: #016533;
+}
+
+.p-progressbar .p-progressbar-value {
+  border: 0 none;
+  margin: 0;
+  background: $secondary-color;
+}

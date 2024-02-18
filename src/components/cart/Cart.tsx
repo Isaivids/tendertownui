@@ -17,12 +17,12 @@ import { IoClose } from "react-icons/io5";
 import { Dialog } from "primereact/dialog";
 import { ImPrinter } from "react-icons/im";
 import ReactToPrint from "react-to-print";
-import Shimmer from "../shimmer/Shimmer";
 import { Message } from "primereact/message";
 import logo from '../../assets/logo.png'
 import { changeActive, clearSelectedUser } from "../../store/slice/user";
 import { Checkbox } from "primereact/checkbox";
 import { useNavigate } from "react-router-dom";
+import { ProgressBar } from "primereact/progressbar";
 const Cart = () => {
   const now = new Date();
   const formattedDate = now.toLocaleDateString('en-US');
@@ -228,7 +228,7 @@ const Cart = () => {
   return (
     <div className="cart">
       {visible && <BasicDemo />}
-      {(cartDetails.loading || cartDetails.aLoading) && <Shimmer count={6} />}
+      {(cartDetails.loading || cartDetails.aLoading) && <ProgressBar mode="indeterminate" style={{ height: '6px' }}></ProgressBar>}
       {(cartDetails.error || cartDetails.aError) && (
         <Message severity="error" text="Unable to fetch Data" />
       )}
