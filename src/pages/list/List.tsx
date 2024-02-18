@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 import { AppDispatch } from "../../store/store";
 import { getProducts } from "../../store/slice/products";
 import ProductCard from "../../components/productCard/ProductCard";
-import PieLoader from "../../components/pieLoader/PieLoader";
 import { Message } from "primereact/message";
 
 const List = () => {
@@ -13,7 +12,6 @@ const List = () => {
   const productDetails = useSelector((state: any) => state.productDetaild);
   const userDetails = useSelector((state: any) => state.userDetails);
   const dispatch = useDispatch<AppDispatch>();
-  const cartDetails = useSelector((state: any) => state.cartDetails);
 
   const fetchData = useCallback(async () => {
     try {
@@ -25,7 +23,6 @@ const List = () => {
   }, [dispatch, params.id]);
 
   useEffect(() => {
-    // setPageName(params.id);
     const fetchDataAndLog = async () => {
       await fetchData();
     };
@@ -34,11 +31,11 @@ const List = () => {
 
   return (
     <div>
-      {!userDetails.selectedUser.name && <Message className="m-2" severity="error" text="Select a table to get Data" />}
-      {productDetails.loading && <PieLoader />}
+      {!userDetails.selectedUser.name && <Message className="m-2 w-full text-center" severity="error" text="Select a table to get Data" />}
+      {productDetails.loading && 'Loading Data. Please Wait'}
       {productDetails.error && <Message severity="error" text="Unable to fetch Data" />}
-      {(!productDetails.loading && !productDetails.error && !cartDetails.loading && !cartDetails.error && userDetails.selectedUser.name) && (  
-        <ProductCard data={data} cartDetails={cartDetails} userDetails={userDetails}/>
+      {(!productDetails.loading && !productDetails.error && userDetails.selectedUser.name) && (  
+        <ProductCard data={data} userDetails={userDetails}/>
       )}
     </div>
   );

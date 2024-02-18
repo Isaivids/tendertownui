@@ -38,7 +38,7 @@ const SideBar = () => {
   }, [fetchData]);
 
   return (
-    <div className="left-sidebar surface-ground p-3">
+    <div className={userDetails.selectedUser.name ? "left-sidebar surface-ground p-3" : "left-sidebar surface-ground"}>
     {(categoryDetails.loading) && <Shimmer count={6}/>}
     {(categoryDetails.error) && <Message severity="error" text="Unable to fetch Data" />}
       {userDetails.selectedUser.name && data.length > 0 &&

@@ -1,12 +1,13 @@
 import React from "react";
 import "./ProductCard.scss";
 import "../../App.scss";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../store/store";
 import { addToCartReducer, changeCount } from "../../store/slice/cart";
 import { FaMinus, FaPlus } from "react-icons/fa";
-const ProductCard = ({ data,cartDetails,userDetails }: any) => {
+const ProductCard = ({ data,userDetails }: any) => {
   const dispatch = useDispatch<AppDispatch>();
+  const cartDetails = useSelector((state: any) => state.cartDetails);
 
   const getCountById = (targetProductId: string): number => {
     if (cartDetails.body.data) {
@@ -55,7 +56,7 @@ const ProductCard = ({ data,cartDetails,userDetails }: any) => {
 
   return (
     <div className="productCard p-2 flex gap-2 flex-wrap justify-content-center">
-      {data.length > 0 &&
+      {data.length > 0 ?
         data.map((x: any, index: any) => {
           return (
             <div
@@ -66,7 +67,7 @@ const ProductCard = ({ data,cartDetails,userDetails }: any) => {
                 <img src={x.photo} alt={x.name} className="" />
               </div>
               <div className="name flex justify-content-between pmy text-center p-2 w-full">
-                <span className="text-sm font-semibold">{x.name}</span>
+                <span className="text-sm font-semibold overflow-hidden whitespace-nowrap text-overflow-ellipsis" title={x.name}>{x.name}</span>
                 <span className="text-sm font-semibold"> ₹ - {x.amount}</span>
               </div>
               <div className="p-0 flex justify-content-between count">
@@ -76,7 +77,7 @@ const ProductCard = ({ data,cartDetails,userDetails }: any) => {
               {getCountById(x._id) ? (<span className="badge">{getCountById(x._id)}</span>) : ''}
             </div>
           );
-        })}
+        }) : 'No Data FOund'}
     </div>
   );
 };

@@ -39,6 +39,7 @@ const Cart = () => {
   const [billNumber, setBillNumber]: any = useState();
 
   const fetchData = useCallback(async () => {
+    console.log('heree')
     try {
       const cart = await dispatch(
         getCartItems({ userId: userDetails.selectedUser._id })
@@ -123,6 +124,7 @@ const Cart = () => {
   };
 
   const makeDialogVisible = () => {
+    changeActiveStatus();
     getRandomBillNumber();
     setVisible(true);
   };
@@ -249,7 +251,7 @@ const Cart = () => {
                     className="flex m-3 align-items-center gap-2 p-2 surface-0 flex-column mb-3 shadow-1"
                   >
                     <span className="text-color	">
-                      {item.name} - <b>₹{item.price * item.count}</b>
+                      {item.name.length > 10 ? item.name.substring(0,10)+ '...' : item.name} : <b>₹{item.price * item.count}</b>
                     </span>
                     <div className="flex gap-3">
                       <FaMinus

@@ -6,7 +6,7 @@ import { Column } from "primereact/column";
 import { MdEditDocument } from "react-icons/md";
 import { RiDeleteBin6Fill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
-import { addCategory, deleteCategory, getCategory } from "../../store/slice/category";
+import { addCategory, deleteCategory, getCategory, updateCategory } from "../../store/slice/category";
 import { AppDispatch } from "../../store/store";
 
 const Categories = () => {
@@ -49,10 +49,10 @@ const Categories = () => {
           setData(rs.payload.data);
         }
       } else {
-        // const rs:any = await dispatch(updateProduct(item));
-        // if(rs.status){
-        //   await dispatch(getProducts({ category: "" }));
-        // }
+        const rs:any = await dispatch(updateCategory(item));
+        if (rs.payload.status && !categoryDetails.body.loading) {
+          setData(rs.payload.data);
+        }
       }
     } catch (error) {
       console.log(error);
@@ -111,6 +111,7 @@ const Categories = () => {
     setMode(type);
     setPopupVisible(true);
   };
+
   return (
     <div className="w-full p-3">
       {categoryDetails.loading ? (

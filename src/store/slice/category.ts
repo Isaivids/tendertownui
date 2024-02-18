@@ -29,6 +29,14 @@ export const addCategory = createAsyncThunk('addCategory', async (body:any) => {
     return response.data;
 })
 
+export const updateCategory = createAsyncThunk('updateCategory', async (body:any) => {
+    const response = await apiCall.post(`/updateCategory`,body);
+    if (response.data.error) {
+        throw new Error("Error message");
+    }
+    return response.data;
+})
+
 export const deleteCategory = createAsyncThunk('deleteCategory', async (body:any) => {
     const response = await apiCall.post(`/deleteCategory`,body);
     if (response.data.error) {
@@ -63,6 +71,15 @@ const CategorySlice = createSlice({
             return { ...state, body: payload, error: false, loading: false }
         })
         builder.addCase(addCategory.rejected, (state) => {
+            return { ...state, loading: false, error: true }
+        })
+        builder.addCase(updateCategory.pending, (state, _payload) => {
+            return { ...state, loading: true }
+        })
+        builder.addCase(updateCategory.fulfilled, (state, { payload }) => {
+            return { ...state, body: payload, error: false, loading: false }
+        })
+        builder.addCase(updateCategory.rejected, (state) => {
             return { ...state, loading: false, error: true }
         })
         builder.addCase(deleteCategory.pending, (state, _payload) => {

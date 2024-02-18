@@ -223,7 +223,7 @@ const Products = () => {
 
   return (
     <div>
-      {(categoryDetails.loading || productDetails.loading) && <PieLoader />}
+      {(categoryDetails.loading || productDetails.loading) && 'Loading Please wait'}
       {!categoryDetails.loading &&
         !categoryDetails.error &&
         !productDetails.loading && (
@@ -253,7 +253,7 @@ const Products = () => {
                   label="Upload"
                   severity="info"
                   onClick={uploadFile}
-                  disabled={!file}
+                  disabled={!file.name}
                 />
               </div>
             </div>

@@ -60,7 +60,7 @@ const PopUp = ({
   const footerContent = (
     <div>
       <Button label="No" icon="pi pi-times" className="p-button-text" onClick={handleNo} />
-      <Button label={mode} icon="pi pi-check" onClick={handleYes} />
+      <Button label={mode} icon="pi pi-check" disabled={!(product.name && product.amount && product.gst && product.photo && product.category)} onClick={handleYes} />
     </div>
   );
 
@@ -103,6 +103,7 @@ const PopUp = ({
               name="name"
               value={product.name}
               onChange={handleChange}
+              maxLength={15}
             />
           </div>
           <div className="flex flex-column">
