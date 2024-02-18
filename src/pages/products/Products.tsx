@@ -17,6 +17,7 @@ import { RiDeleteBin6Fill } from "react-icons/ri";
 import "./Product.scss";
 import PopUp from "./PopUp";
 import { FaUpload } from "react-icons/fa";
+import { ProgressBar } from "primereact/progressbar";
 
 const Products = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -222,7 +223,7 @@ const Products = () => {
 
   return (
     <div>
-      {(categoryDetails.loading || productDetails.loading) && 'Loading Please wait'}
+      {(categoryDetails.loading || productDetails.loading) && <ProgressBar mode="indeterminate" style={{ height: '6px' }}></ProgressBar>}
       {!categoryDetails.loading &&
         !categoryDetails.error &&
         !productDetails.loading && (

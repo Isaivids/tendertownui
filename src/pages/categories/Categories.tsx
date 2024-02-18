@@ -8,6 +8,7 @@ import { RiDeleteBin6Fill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { addCategory, deleteCategory, getCategory, updateCategory } from "../../store/slice/category";
 import { AppDispatch } from "../../store/store";
+import { ProgressBar } from "primereact/progressbar";
 
 const Categories = () => {
   const [popupVisible, setPopupVisible] = useState(false);
@@ -115,7 +116,7 @@ const Categories = () => {
   return (
     <div className="w-full p-3">
       {categoryDetails.loading ? (
-        "Loading"
+        <ProgressBar mode="indeterminate" style={{ height: '6px' }}></ProgressBar>
       ) : (
         <div>
           <div className="flex justify-content-between">
