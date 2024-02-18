@@ -45,14 +45,17 @@ const Cart = () => {
 
   const fetchData = useCallback(async () => {
     try {
-      const cart = await dispatch(
+      const rs = await dispatch(
         getCartItems({ userId: userDetails.selectedUser._id })
       );
-      setData(cart.payload?.data);
+      if(rs.payload.status && !cartDetails.body.loading){
+        dispatch(changeGST());
+        setData(rs.payload?.data);
+      }
     } catch (error) {
       console.log(error);
     }
-  }, [dispatch, userDetails.selectedUser._id]);
+  }, [cartDetails.body.loading, dispatch, userDetails.selectedUser._id]);
 
   const changeCountValue = async (data: any, type: string) => {
     const body: any = {

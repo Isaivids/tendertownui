@@ -70,7 +70,7 @@ export const addMultipleItems = createAsyncThunk('addMultipleItems', async (body
 
 const calculateTotal = (items: any[],gst:boolean): number => {
     let total = 0;
-    if(gst){
+    if(gst && items){
         items.forEach((item) => {
             let price = item.price;
             if (item.gst && item.gst > 0) {
@@ -79,9 +79,8 @@ const calculateTotal = (items: any[],gst:boolean): number => {
             total += price * item.count;
         });
     }else{
-        total = items.reduce((total, item) => total + item.price * item.count, 0);
+        total = items && items.reduce((total, item) => total + item.price * item.count, 0);
     }
-
     return total;
 };
 
@@ -134,6 +133,7 @@ const cartSlice = createSlice({
             return { ...state, loading: true }
         })
         builder.addCase(getCartItems.fulfilled, (state, { payload }) => {
+            calculateTotal(state.body.data,state.gst);
             return { ...state, body: payload, error: false, loading: false }
         })
         builder.addCase(getCartItems.rejected, (state) => {
