@@ -64,3 +64,8 @@ small{
   border-color: $primary-color;
   background: white;
 }
+
+.p-datatable.p-datatable-gridlines .p-paginator-bottom {
+  border-width: 0 px;
+  padding: 0px;
+}

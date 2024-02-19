@@ -1,14 +1,13 @@
 import { Button } from "primereact/button";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import AddPopup from "./AddPopup";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { MdEditDocument } from "react-icons/md";
-import { RiDeleteBin6Fill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { addCategory, deleteCategory, getCategory, updateCategory } from "../../store/slice/category";
 import { AppDispatch } from "../../store/store";
-import { ProgressBar } from "primereact/progressbar";
+import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup';
+import { Toast } from "primereact/toast";
 
 const Categories = () => {
   const [popupVisible, setPopupVisible] = useState(false);
@@ -17,27 +16,35 @@ const Categories = () => {
   const [mode, setMode] = useState("");
   const [data, setData] = useState([]);
   const [edit, setEdit] = useState({});
-
-  const deleteProductOne = async(options:any) =>{
+  const toast:any = useRef<Toast>(null);
+  const accept = async(options:any) => {
     try {
       const rs = await dispatch(deleteCategory({id : options._id}));
       if (rs.payload.status && !categoryDetails.body.loading) {
         setData(rs.payload.data);
+        toast.current.show({ severity: 'info', summary: 'info', detail: 'Deleted Successfully', life: 3000 });
       }
     } catch (error) {
-      console.log(error)
+      toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error in deleting data', life: 3000 });
     }
+  };
+
+  const deleteProductOne = async(event:any,options:any) =>{
+    confirmPopup({
+      target: event.currentTarget,
+      message: 'Do you want to delete this record?',
+      icon: 'pi pi-info-circle',
+      defaultFocus: 'reject',
+      acceptClassName: 'p-button-danger',
+      accept : () => accept(options),
+  });
   }
 
   const ActionsTemplate = (options: any) => {
     return (
-      <div className="flex ">
-        <span className="text-teal-600 text-xl cursor-pointer">
-          <MdEditDocument onClick={(e: any) => showDialog("update", options)} />
-        </span>
-        <span className="text-red-500	text-xl cursor-pointer">
-          <RiDeleteBin6Fill onClick={() => deleteProductOne(options)}/>
-        </span>
+      <div className="flex gap-2">
+          <Button label="Update" severity="success" onClick={(e: any) => showDialog("update", options)} />
+          <Button label="Delete" severity="danger" onClick={(e:any) => deleteProductOne(e,options)}/>
       </div>
     );
   };
@@ -115,9 +122,9 @@ const Categories = () => {
 
   return (
     <div className="w-full p-3">
-      {categoryDetails.loading ? (
-        <ProgressBar mode="indeterminate" style={{ height: '6px' }}></ProgressBar>
-      ) : (
+      <Toast ref={toast} />
+      <ConfirmPopup />
+      {categoryDetails.loading ? 'Loading Data. Please Wait...': (
         <div>
           <div className="flex justify-content-between">
             <Button

@@ -1,7 +1,6 @@
 // Admin.tsx
 import React, { useState } from "react";
 import "./Admin.scss";
-import { FaUser } from "react-icons/fa";
 import { NavLink, Outlet } from "react-router-dom";
 import { BiSolidDrink } from "react-icons/bi";
 import { BiCategoryAlt } from "react-icons/bi";
@@ -23,10 +22,10 @@ function Sidebar({ isOpen, toggleSidebar }: any) {
           <BiCategoryAlt />
           <span className={isOpen ? "" : "hidden"}>Categories</span>
         </NavLink>
-        <NavLink to="/admin/users" className={({ isActive }) => isActive ? 'activelink flex gap-2 align-items-center navlinks' : 'flex gap-2 align-items-center navlinks'}>
+        {/* <NavLink to="/admin/users" className={({ isActive }) => isActive ? 'activelink flex gap-2 align-items-center navlinks' : 'flex gap-2 align-items-center navlinks'}>
           <FaUser />
           <span className={isOpen ? "" : "hidden"}>User</span>
-        </NavLink>
+        </NavLink> */}
       </div>
     </div>
   );

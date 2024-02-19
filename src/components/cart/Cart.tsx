@@ -23,6 +23,7 @@ import { changeActive, clearSelectedUser } from "../../store/slice/user";
 import { Checkbox } from "primereact/checkbox";
 import { useNavigate } from "react-router-dom";
 import { ProgressBar } from "primereact/progressbar";
+import { addBill } from "../../store/slice/bill";
 const Cart = () => {
   const now = new Date();
   const formattedDate = now.toLocaleDateString('en-US');
@@ -30,6 +31,7 @@ const Cart = () => {
   const [data, setData] = useState<any>([]);
   const cartDetails = useSelector((state: any) => state.cartDetails);
   const userDetails = useSelector((state: any) => state.userDetails);
+  const billDetails = useSelector((state: any) => state.billDetails);
   const dispatch = useDispatch<AppDispatch>();
   const [visible, setVisible] = useState(false);
   const [checked, setChecked] = useState(false);
@@ -137,12 +139,20 @@ const Cart = () => {
     const timestamp = currentDate.getTime();
     const combinedValue = timestamp + 100;
     setBillNumber(combinedValue);
+    return combinedValue;
   };
 
-  const makeDialogVisible = () => {
+  const makeDialogVisible = async() => {
     // changeActiveStatus();
-    getRandomBillNumber();
-    setVisible(true);
+    const bill = getRandomBillNumber();
+    const body = {
+      billNumber : bill,
+      details : cartDetails.body.data
+    }
+    const rs = await dispatch(addBill(body));
+    if(rs.payload.status){
+      setVisible(true);
+    }
   };
 
   const BasicDemo = () => {  
@@ -231,7 +241,7 @@ const Cart = () => {
   return (
     <div className="cart">
       {visible && <BasicDemo />}
-      {(cartDetails.loading || cartDetails.aLoading) && <ProgressBar mode="indeterminate" style={{ height: '6px' }}></ProgressBar>}
+      {(cartDetails.loading || cartDetails.aLoading || billDetails.loading) && <ProgressBar mode="indeterminate" style={{ height: '6px' }}></ProgressBar>}
       {(cartDetails.error || cartDetails.aError) && (
         <Message severity="error" text="Unable to fetch Data" />
       )}

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../store/store";
 import {
@@ -12,12 +12,11 @@ import { getCategory } from "../../store/slice/category";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
-import { MdEditDocument } from "react-icons/md";
-import { RiDeleteBin6Fill } from "react-icons/ri";
 import "./Product.scss";
 import PopUp from "./PopUp";
 import { FaUpload } from "react-icons/fa";
-import { ProgressBar } from "primereact/progressbar";
+import { Toast } from "primereact/toast";
+import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup';
 
 const Products = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -36,6 +35,19 @@ const Products = () => {
   });
   const [edit, setEdit]: any = useState({});
   const [file, setfile] = useState({ name: "", file: "", error: "" });
+  const toast:any = useRef<Toast>(null);
+
+  const accept = async(options:any) => {
+    try {
+      const rs = await dispatch(deleteProduct({ id: options._id }));
+      if (rs.payload.status && !categoryDetails.body.loading) {
+        setData(rs.payload.data);
+        toast.current.show({ severity: 'info', summary: 'info', detail: 'Deleted Successfully', life: 3000 });
+      }
+    } catch (error) {
+      toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error in deleting data', life: 3000 });
+    }
+  };
 
   const handleSubmit = async (type: any) => {
     try {
@@ -106,16 +118,9 @@ const Products = () => {
 
   const ActionsTemplate = (options: any) => {
     return (
-      <div className="flex ">
-        <span className="text-teal-600 text-xl cursor-pointer">
-          <MdEditDocument onClick={(e: any) => showDialog("update", options)} />
-        </span>
-        <span
-          className="text-red-500	text-xl cursor-pointer"
-          onClick={() => deleteProductOne(options)}
-        >
-          <RiDeleteBin6Fill />
-        </span>
+      <div className="flex gap-2">
+          <Button label="Update" severity="success" onClick={(e: any) => showDialog("update", options)} />
+          <Button label="Delete" severity="danger" onClick={(e:any) => deleteProductOne(e,options)}/>
       </div>
     );
   };
@@ -130,7 +135,7 @@ const Products = () => {
           sortMode="multiple"
           showGridlines
           paginator
-          rows={5}
+          rows={10}
         >
           <Column
             field="photo"
@@ -180,15 +185,15 @@ const Products = () => {
     setPopupVisible(true);
   };
 
-  const deleteProductOne = async (options: any) => {
-    try {
-      const rs = await dispatch(deleteProduct({ id: options._id }));
-      if (rs.payload.status && !categoryDetails.body.loading) {
-        setData(rs.payload.data);
-      }
-    } catch (error) {
-    console.error("Error deleting product:", error);
-    }
+  const deleteProductOne = async (event:any,options: any) => {
+    confirmPopup({
+        target: event.currentTarget,
+        message: 'Do you want to delete this record?',
+        icon: 'pi pi-info-circle',
+        defaultFocus: 'reject',
+        acceptClassName: 'p-button-danger',
+        accept : () => accept(options),
+    });
   };
 
   const customBase64Uploader = async (event: any) => {
@@ -223,7 +228,9 @@ const Products = () => {
 
   return (
     <div>
-      {(categoryDetails.loading || productDetails.loading) && <ProgressBar mode="indeterminate" style={{ height: '6px' }}></ProgressBar>}
+      <Toast ref={toast} />
+      <ConfirmPopup />
+      {(categoryDetails.loading || productDetails.loading) && 'Loading Data. Please Wait....'}
       {!categoryDetails.loading &&
         !categoryDetails.error &&
         !productDetails.loading && (
