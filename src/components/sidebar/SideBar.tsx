@@ -12,8 +12,6 @@ const SideBar = () => {
   const [data, setData]:any = useState([])
   const categoryDetails = useSelector((state: any) => state.categoryDetals);
   const dispatch = useDispatch<AppDispatch>();
-  const userDetails = useSelector((state: any) => state.userDetails);
-
   const fetchData = useCallback(async () => {
     try {
       const categories = await dispatch(getCategory());
