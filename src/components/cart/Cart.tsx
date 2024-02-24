@@ -19,7 +19,7 @@ import { ImPrinter } from "react-icons/im";
 import ReactToPrint from "react-to-print";
 import { Message } from "primereact/message";
 import logo from '../../assets/logo.png'
-import { changeActive, clearSelectedUser, getUsers, setLoggedInUser} from "../../store/slice/user";
+import { getUsers, setLoggedInUser} from "../../store/slice/user";
 import { Checkbox } from "primereact/checkbox";
 import { useNavigate } from "react-router-dom";
 import { ProgressBar } from "primereact/progressbar";
@@ -126,13 +126,13 @@ const Cart = () => {
     );
   };
 
-  const changeActiveStatus = async() =>{
-    const rs = await dispatch(changeActive({tableId : userDetails.selectedUser._id, active : false}));
-    if(rs.payload.status){
-      setVisible(false);
-      dispatch(clearSelectedUser());
-    }
-  }
+  // const changeActiveStatus = async() =>{
+  //   const rs = await dispatch(changeActive({tableId : userDetails.selectedUser._id, active : false}));
+  //   if(rs.payload.status){
+  //     setVisible(false);
+  //     dispatch(clearSelectedUser());
+  //   }
+  // }
 
   const getRandomBillNumber = () => {
     const currentDate = new Date();
