@@ -64,7 +64,7 @@ const ProductCard = ({ data,userDetails }: any) => {
               key={index}
               className="flex flex-column shadow-2 card align-items-center surface-ground "
             >
-              <div className="image-cont p-2 ">
+              <div className="image-cont p-2 cursor-pointer" onClick={()=> addItemToCart(x)}>
                 <img src={x.photo} alt={x.name} className="" />
               </div>
               <div className="name flex justify-content-between pmy text-center p-2 w-full">

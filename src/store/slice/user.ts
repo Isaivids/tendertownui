@@ -51,7 +51,7 @@ const UserSlice = createSlice({
     name: 'user',
     reducers: {
         clearUser: (state) => {
-            return { ...state, body: {} }
+            return { ...state, body: {data : []},selectedUser: {} }
         },
         // addUser: (state, action: PayloadAction<string>) => {
         //     const user: any = action.payload;
@@ -62,7 +62,7 @@ const UserSlice = createSlice({
             state.selectedUser = user
         },
         clearSelectedUser: (state) => {
-            state.selectedUser = {}
+            state.selectedUser = {active : true}
         },
     },
     extraReducers: (builder) => {

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addUser,
   changeActive,
+  clearSelectedUser,
   deleteUser,
   getUsers,
   setLoggedInUser,
@@ -30,9 +31,9 @@ const ActiveBills = () => {
   };
 
   const deleteUserClikc = async (x: any) => {
-    const rs = await dispatch(deleteUser({ id: x._id }));
+    const rs = await dispatch(deleteUser({ id: x._id,name : x.name }));
     if (rs.payload && rs.payload.status) {
-      console.log(rs);
+      dispatch(clearSelectedUser())
     }
   };
 

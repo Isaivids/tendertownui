@@ -55,6 +55,7 @@ const Bills = () => {
             }}
           ></Column>
           <Column field="billNumber" header="Bill Number" sortable></Column>
+          <Column field="billName" header="Bill Name" sortable></Column>
           <Column field="gstEnabled" header="GST" sortable></Column>
           <Column field="individualTotal" header="Total" sortable></Column>
         </DataTable>

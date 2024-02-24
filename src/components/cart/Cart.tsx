@@ -19,7 +19,7 @@ import { ImPrinter } from "react-icons/im";
 import ReactToPrint from "react-to-print";
 import { Message } from "primereact/message";
 import logo from '../../assets/logo.png'
-import { changeActive, clearSelectedUser, getUsers } from "../../store/slice/user";
+import { changeActive, clearSelectedUser, getUsers, setLoggedInUser} from "../../store/slice/user";
 import { Checkbox } from "primereact/checkbox";
 import { useNavigate } from "react-router-dom";
 import { ProgressBar } from "primereact/progressbar";
@@ -119,7 +119,7 @@ const Cart = () => {
           content={() => invoiceRef.current}
           onAfterPrint = {async() => {
             navigate('/');
-            await changeActiveStatus();
+            // await changeActiveStatus();
           }}
         />
       </div>
@@ -148,6 +148,7 @@ const Cart = () => {
     const body = {
       billNumber : bill,
       gstEnabled : checked,
+      billName: userDetails.selectedUser.name,
       details : cartDetails.body.data
     }
     const rs = await dispatch(addBill(body));
@@ -234,7 +235,10 @@ const Cart = () => {
       };
       const cart = await dispatch(addMultipleItems(body));
       if(cart.payload.status){
-        await dispatch(getUsers());
+        const rsa = await dispatch(getUsers());
+        if (rsa.payload && rsa.payload.status && !userDetails.body.error) {
+          dispatch(setLoggedInUser(rsa.payload.data[rsa.payload.data.length - 1]));
+        }
         setData(cart.payload?.data);
       }
     } catch (error) {
