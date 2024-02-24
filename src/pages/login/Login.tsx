@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import biller from '../../assets/icons/biller.svg'
 import admin from '../../assets/icons/admin.svg'
 import './Login.scss'
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../store/store';
+import { clearSelectedUser } from '../../store/slice/user';
 const Login: any = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const handleLogin = (type:any) => {
     if(type === 'admin'){
@@ -12,6 +16,11 @@ const Login: any = () => {
       navigate('/list/all');
     }
   };
+
+  useEffect(() => {
+    dispatch(clearSelectedUser());
+  }, [dispatch])
+  
 
   return (
     <div className="pmy h-screen flex flex-column align-items-center justify-content-center">

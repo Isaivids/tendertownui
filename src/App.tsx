@@ -8,7 +8,7 @@ import Home from "./pages/Home/Home";
 import Admin from "./pages/admin/Admin";
 import Products from "./pages/products/Products";
 import Categories from "./pages/categories/Categories";
-import Users from "./pages/users/Users";
+import Bills from "./pages/bills/Bills";
 
 function App() {
   return (
@@ -22,7 +22,7 @@ function App() {
           <Route element={<Admin />}>
             <Route path="/admin/products" element={<Products />} />
             <Route path="/admin/categories" element={<Categories />} />
-            <Route path="/admin/users" element={<Users />} />
+            <Route path="/admin/bills" element={<Bills />} />
           </Route>
         </Route>
       </Routes>

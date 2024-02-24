@@ -19,7 +19,7 @@ import { ImPrinter } from "react-icons/im";
 import ReactToPrint from "react-to-print";
 import { Message } from "primereact/message";
 import logo from '../../assets/logo.png'
-import { changeActive, clearSelectedUser } from "../../store/slice/user";
+import { changeActive, clearSelectedUser, getUsers } from "../../store/slice/user";
 import { Checkbox } from "primereact/checkbox";
 import { useNavigate } from "react-router-dom";
 import { ProgressBar } from "primereact/progressbar";
@@ -48,7 +48,7 @@ const Cart = () => {
   const fetchData = useCallback(async () => {
     try {
       const rs = await dispatch(
-        getCartItems({ userId: userDetails.selectedUser._id })
+        getCartItems({ userId: userDetails.selectedUser.name })
       );
       if(rs.payload.status && !cartDetails.body.loading){
         dispatch(changeGST());
@@ -57,7 +57,7 @@ const Cart = () => {
     } catch (error) {
       console.log(error);
     }
-  }, [cartDetails.body.loading, dispatch, userDetails.selectedUser._id]);
+  }, [cartDetails.body.loading, dispatch, userDetails.selectedUser.name]);
 
   const changeCountValue = async (data: any, type: string) => {
     const body: any = {
@@ -98,10 +98,10 @@ const Cart = () => {
 
   useEffect(() => {
     const fetchDataAndLog = async () => {
-      userDetails && await fetchData();
+      userDetails.selectedUser.active && await fetchData();
     };
     fetchDataAndLog();
-  }, [fetchData, userDetails]);
+  }, [fetchData, userDetails.selectedUser]);
 
   useEffect(() => {
     if (cartDetails.body.data) {
@@ -147,6 +147,7 @@ const Cart = () => {
     const bill = getRandomBillNumber();
     const body = {
       billNumber : bill,
+      gstEnabled : checked,
       details : cartDetails.body.data
     }
     const rs = await dispatch(addBill(body));
@@ -228,11 +229,14 @@ const Cart = () => {
         return rest;
       });
       const body = {
-        userId: userDetails.selectedUser._id,
+        userId: userDetails.selectedUser.name,
         products: newArray,
       };
       const cart = await dispatch(addMultipleItems(body));
-      setData(cart.payload?.data);
+      if(cart.payload.status){
+        await dispatch(getUsers());
+        setData(cart.payload?.data);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -248,7 +252,7 @@ const Cart = () => {
       {(!cartDetails.loading &&
         !cartDetails.aLoading &&
         !cartDetails.error &&
-        !cartDetails.aError && userDetails.selectedUser.name) && (
+        !cartDetails.aError) && (
           <div className="h-full content surface-ground">
             <div className="pmy flex p-3 gap-1 justify-content-between">
               <span className="font-bold text-center text-lg">Bill</span>

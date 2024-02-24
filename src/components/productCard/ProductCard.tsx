@@ -56,7 +56,7 @@ const ProductCard = ({ data,userDetails }: any) => {
   };
 
   return (
-    <div className="productCard p-2 flex gap-2 flex-wrap justify-content-center">
+    <div className="productCard p-2 flex gap-2 flex-wrap">
       {data.length > 0 ?
         data.map((x: any, index: any) => {
           return (

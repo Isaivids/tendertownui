@@ -44,10 +44,9 @@ const List = () => {
 
   return (
     <div>
-      {!userDetails.selectedUser.name && <Message className="m-2 w-full text-center" severity="error" text="Select a table to get Data" />}
       {productDetails.loading && <ProgressBar mode="indeterminate" style={{ height: '6px' }}></ProgressBar>}
       {productDetails.error && <Message severity="error" text="Unable to fetch Data" />}
-      {(!productDetails.loading && !productDetails.error && userDetails.selectedUser.name) && (  
+      {(!productDetails.loading && !productDetails.error) && (  
         <>
           <ProductCard data={data} userDetails={userDetails}/>
           <Paginator first={first} rows={rows} totalRecords={totalPage} onPageChange={onPageChange} />

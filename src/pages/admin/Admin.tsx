@@ -4,6 +4,7 @@ import "./Admin.scss";
 import { NavLink, Outlet } from "react-router-dom";
 import { BiSolidDrink } from "react-icons/bi";
 import { BiCategoryAlt } from "react-icons/bi";
+import { FaChartBar } from "react-icons/fa";
 
 function Sidebar({ isOpen, toggleSidebar }: any) {
   return (
@@ -22,10 +23,10 @@ function Sidebar({ isOpen, toggleSidebar }: any) {
           <BiCategoryAlt />
           <span className={isOpen ? "" : "hidden"}>Categories</span>
         </NavLink>
-        {/* <NavLink to="/admin/users" className={({ isActive }) => isActive ? 'activelink flex gap-2 align-items-center navlinks' : 'flex gap-2 align-items-center navlinks'}>
-          <FaUser />
-          <span className={isOpen ? "" : "hidden"}>User</span>
-        </NavLink> */}
+        <NavLink to="/admin/bills" className={({ isActive }) => isActive ? 'activelink flex gap-2 align-items-center navlinks' : 'flex gap-2 align-items-center navlinks'}>
+          <FaChartBar />
+          <span className={isOpen ? "" : "hidden"}>Bills</span>
+        </NavLink>
       </div>
     </div>
   );

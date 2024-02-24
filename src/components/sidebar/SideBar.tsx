@@ -38,10 +38,10 @@ const SideBar = () => {
   }, [fetchData]);
 
   return (
-    <div className={userDetails.selectedUser.name ? "left-sidebar surface-ground p-3" : "left-sidebar surface-ground"}>
+    <div className="left-sidebar surface-ground p-3">
     {(categoryDetails.loading) && <Shimmer count={6}/>}
     {(categoryDetails.error) && <Message severity="error" text="Unable to fetch Data" />}
-      {userDetails.selectedUser.name && data.length > 0 &&
+      {data.length > 0 &&
         data.map((x: any, index: number) => {
           return (
             <NavLink
