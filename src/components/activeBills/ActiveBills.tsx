@@ -49,6 +49,7 @@ const ActiveBills = () => {
   }, [dispatch]);
 
   const toggle = (e: any) => {
+    setUserName('')
     op?.current.toggle(e);
   };
 

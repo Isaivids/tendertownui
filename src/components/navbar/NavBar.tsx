@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../../App.scss";
 import logo from "../../assets/logo.png";
 import "./NavBar.scss";
@@ -18,8 +18,8 @@ const NavBar = () => {
   const userDetails = useSelector((state: any) => state.userDetails);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const location = useLocation();
   useEffect(() => {
+    console.log('here')
     const today = new Date();
     const timestamp = today.getTime();
     const randomNumber = Math.floor(Math.random() * timestamp);
@@ -32,7 +32,7 @@ const NavBar = () => {
       }
       dispatch(setLoggedInUser(body));
     }
-  }, [dispatch, location, userDetails.body.selectedUser]);
+  }, [dispatch, userDetails.body.selectedUser]);
 
   const logout = () => {
     dispatch(clearCart());

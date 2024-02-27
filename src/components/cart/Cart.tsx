@@ -97,6 +97,8 @@ const Cart = () => {
   }
 
   useEffect(() => {
+    console.log('ehe');
+    
     const fetchDataAndLog = async () => {
       userDetails.selectedUser.active && await fetchData();
     };
@@ -278,7 +280,7 @@ const Cart = () => {
                   disabled={data.length < 1}
                   onClick={makeDialogVisible}
                 />
-                <Button label="+" onClick={handleMultipleSave} />
+                <Button label="Hold" onClick={handleMultipleSave} />
               </div>
               {data &&
                 data.length > 0 &&
