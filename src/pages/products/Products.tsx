@@ -17,6 +17,7 @@ import PopUp from "./PopUp";
 import { FaUpload } from "react-icons/fa";
 import { Toast } from "primereact/toast";
 import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup';
+import { Paginator } from "primereact/paginator";
 
 const Products = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -37,6 +38,17 @@ const Products = () => {
   const [file, setfile] = useState({ name: "", file: "", error: "" });
   const toast:any = useRef<Toast>(null);
 
+  //pagination
+  const [first, setFirst] = useState(0);
+  const [rows, setRows] = useState(10);
+  const [totalPage, setTotalPage] = useState(0);
+  const [page, setPage] = useState(0)
+  const onPageChange = (event:any) => {
+      setPage(event.page);
+      setFirst(event.first);
+      setRows(event.rows);
+  };
+  
   const accept = async(options:any) => {
     try {
       const rs = await dispatch(deleteProduct({ id: options._id }));
@@ -86,13 +98,15 @@ const Products = () => {
 
   const fetchData = useCallback(async () => {
     try {
-      const data = await dispatch(getProducts({ category: "" }));
+      const data = await dispatch(getProducts({ category: "",page : page, rows:rows }));
       await dispatch(getCategory());
       setData(data.payload?.data);
+      setTotalPage(data.payload.pagination.totalItems)
+      // setData(data.payload?.data);
     } catch (error) {
       console.log(error);
     }
-  }, [dispatch]);
+  }, [dispatch, page, rows]);
 
   useEffect(() => {
     const fetchDataAndLog = async () => {
@@ -119,8 +133,8 @@ const Products = () => {
   const ActionsTemplate = (options: any) => {
     return (
       <div className="flex gap-2">
-          <Button label="Update" severity="success" onClick={(e: any) => showDialog("update", options)} />
-          <Button label="Delete" severity="danger" onClick={(e:any) => deleteProductOne(e,options)}/>
+          <Button label="Update" severity="success" style={{height : '30px'}} onClick={(e: any) => showDialog("update", options)} />
+          <Button label="Delete" severity="danger" style={{height : '30px'}} onClick={(e:any) => deleteProductOne(e,options)}/>
       </div>
     );
   };
@@ -134,7 +148,7 @@ const Products = () => {
           scrollHeight="80vh"
           sortMode="multiple"
           showGridlines
-          paginator
+          // paginator
           rows={10}
         >
           <Column
@@ -175,6 +189,7 @@ const Products = () => {
             style={{ width: "10%" }}
           ></Column>
         </DataTable>
+        <Paginator first={first} rows={rows} totalRecords={totalPage} onPageChange={onPageChange} />
       </div>
     );
   };

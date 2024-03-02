@@ -43,8 +43,8 @@ const Categories = () => {
   const ActionsTemplate = (options: any) => {
     return (
       <div className="flex gap-2">
-          <Button label="Update" severity="success" onClick={(e: any) => showDialog("update", options)} />
-          <Button label="Delete" severity="danger" onClick={(e:any) => deleteProductOne(e,options)}/>
+          <Button label="Update" severity="success" style={{height : '30px'}} onClick={(e: any) => showDialog("update", options)} />
+          <Button label="Delete" severity="danger" style={{height : '30px'}} onClick={(e:any) => deleteProductOne(e,options)}/>
       </div>
     );
   };
@@ -93,7 +93,7 @@ const Categories = () => {
           sortMode="multiple"
           showGridlines
           paginator
-          rows={5}
+          rows={10}
         >
           <Column
             field="image"
