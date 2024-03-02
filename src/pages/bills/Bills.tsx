@@ -7,6 +7,7 @@ import { AppDispatch } from "../../store/store";
 import { getBills } from "../../store/slice/bill";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import { Badge } from "primereact/badge";
 const Bills = () => {
   let today = new Date();
   const yesterday = new Date(today);
@@ -34,6 +35,14 @@ const Bills = () => {
     await dispatch(getBills(body));
   };
 
+  const gstTemplate = (rowData: any) => {
+    if(rowData.gstEnabled){
+      return <Badge value="GST" severity={"success"} />
+    }else{
+      return <Badge value="No GST" severity={"danger"} />
+    }
+  };
+
   const DataTableComp = () => {
     return (
       <div className="py-3 w-100">
@@ -56,7 +65,9 @@ const Bills = () => {
           ></Column>
           <Column field="billNumber" header="Bill Number" sortable></Column>
           <Column field="billName" header="Bill Name" sortable></Column>
-          <Column field="gstEnabled" header="GST" sortable></Column>
+          <Column field="gstEnabled" header="GST" sortable body={gstTemplate}></Column>
+          <Column field="cash" header="Cash payment" sortable
+            body = {(rowData:any) => {return(<Badge value={rowData?.cash ? 'Cash' : 'Others'} />)}}></Column>
           <Column field="individualTotal" header="Total" sortable></Column>
         </DataTable>
       </div>

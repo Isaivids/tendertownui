@@ -62,7 +62,14 @@ const UserSlice = createSlice({
             state.selectedUser = user
         },
         clearSelectedUser: (state) => {
-            state.selectedUser = {active : true}
+            const today = new Date();
+            const timestamp = today.getTime();
+            state.selectedUser = {
+                _id : 'id' + timestamp,
+                name: 'C'+timestamp,
+                admin: false,
+                active: true,
+              };
         },
     },
     extraReducers: (builder) => {

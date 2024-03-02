@@ -54,8 +54,10 @@ const ActiveBills = () => {
   };
 
   const addNew = async () => {
+    const today = new Date();
+    const timestamp = today.getTime();
     const body: any = {
-      name: userName,
+      name: userName || 'C'+timestamp,
       admin: false,
       active: true,
     };
@@ -100,7 +102,7 @@ const ActiveBills = () => {
               severity="success"
               style={{ height: "30px" }}
               onClick={addNew}
-              disabled={!userName}
+              // disabled={!userName}
             />
           </OverlayPanel>
           <div className="flex gap-3">

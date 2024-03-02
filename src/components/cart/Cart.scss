@@ -20,6 +20,28 @@
   .text-danger {
     color: red;
   }
+  .p-inputswitch .p-inputswitch-slider {
+    border-radius: 50px !important;
+    background-color: #9e9e9e;
+  }
+  .p-inputswitch .p-inputswitch-slider::before {
+    border-radius: 50px !important;
+  }
+  .p-inputswitch.p-inputswitch-checked .p-inputswitch-slider{
+    background-color: #008b45;
+  }
+  .p-focus{
+    box-shadow: none;
+    border: 0 !important;
+    outline: none !important;
+  }
+  .text-danger{
+    background-color: #ff0000;
+    border-radius: 50%;
+    padding: 3px;
+    color: #ddd;
+    cursor: pointer;
+  }
 }
 
 // bill

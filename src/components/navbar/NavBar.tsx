@@ -19,7 +19,6 @@ const NavBar = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   useEffect(() => {
-    console.log('here')
     const today = new Date();
     const timestamp = today.getTime();
     const randomNumber = Math.floor(Math.random() * timestamp);

@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../store/store";
 import { addToCartReducer, changeCount } from "../../store/slice/cart";
 import { FaMinus, FaPlus } from "react-icons/fa";
-import nodata from '../../assets/icons/nodata.svg'
-const ProductCard = ({ data,userDetails }: any) => {
+import nodata from "../../assets/icons/nodata.svg";
+const ProductCard = ({ data, userDetails }: any) => {
   const dispatch = useDispatch<AppDispatch>();
   const cartDetails = useSelector((state: any) => state.cartDetails);
 
@@ -26,23 +26,23 @@ const ProductCard = ({ data,userDetails }: any) => {
     }
   };
 
-  const addItemToCart = async (data:any) =>{
-    const body:any = {
+  const addItemToCart = async (data: any) => {
+    const body: any = {
       userId: userDetails.selectedUser.name,
       productId: data._id,
       name: data.name,
       price: data.amount,
       count: 1,
-      gst : data.gst
-    }
+      gst: data.gst,
+    };
     try {
       dispatch(addToCartReducer(body));
-    } catch (error:any) {
+    } catch (error: any) {
       console.error("Error adding to cart:", error.message);
     }
-  }
+  };
 
-  const changeCountValue = async (data: any,type:string) => {
+  const changeCountValue = async (data: any, type: string) => {
     const body: any = {
       productId: data._id,
       count: 1,
@@ -57,28 +57,48 @@ const ProductCard = ({ data,userDetails }: any) => {
 
   return (
     <div className="productCard p-2 flex gap-2 flex-wrap">
-      {data.length > 0 ?
+      {data.length > 0 ? (
         data.map((x: any, index: any) => {
           return (
             <div
               key={index}
               className="flex flex-column shadow-2 card align-items-center surface-ground "
             >
-              <div className="image-cont p-2 cursor-pointer" onClick={()=> addItemToCart(x)}>
-                <img src={x.photo} alt={x.name} className="" />
+              <div
+                className="image-cont p-2 cursor-pointer"
+                onClick={() => addItemToCart(x)}
+              >
+                <img src={x.photo} alt={x.name} />
               </div>
               <div className="name flex justify-content-between pmy text-center p-2 w-full">
-                <span className="text-sm font-semibold overflow-hidden whitespace-nowrap text-overflow-ellipsis" title={x.name}>{x.name}</span>
+                <span
+                  className="text-sm font-semibold overflow-hidden whitespace-nowrap text-overflow-ellipsis"
+                  title={x.name}
+                >
+                  {x.name}
+                </span>
                 <span className="text-sm font-semibold"> ₹ - {x.amount}</span>
               </div>
               <div className="p-0 flex justify-content-between count">
-                <span className="text-center" onClick={()=> addItemToCart(x)}><FaPlus /></span>
-                <span className="text-center" onClick={()=> changeCountValue(x,'decrease')}><FaMinus /></span>
+                <span className="text-center" onClick={() => addItemToCart(x)}>
+                  <FaPlus />
+                </span>
+                <span
+                  className="text-center"
+                  onClick={() => changeCountValue(x, "decrease")}
+                >
+                  <FaMinus />
+                </span>
               </div>
-              {getCountById(x._id) ? (<span className="badge">{getCountById(x._id)}</span>) : ''}
+              {getCountById(x._id) ? (
+                <span className="badge">{getCountById(x._id)}</span>
+              ) : (
+                ""
+              )}
             </div>
           );
-        }) : <img src={nodata} alt="No Data" style={{width: '30vh'}}/>}
+        })
+      ) :<img src={nodata} alt="No Data" style={{ width: "30vh" }} />}
     </div>
   );
 };
