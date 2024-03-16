@@ -14,7 +14,7 @@ const initialState: State = {
 }
 
 export const getProducts = createAsyncThunk('getProducts', async (body:any) => {
-    const response = await apiCall.get(`/getProducts?category=${body.category}&page=${body.page}&rows=${body.rows}`);
+    const response = await apiCall.get(`/getProducts?category=${body.category}&page=${body.page}&rows=${body.rows}&name=${body.name}`);
     if (response.data.error) {
         throw new Error("Error message");
     }

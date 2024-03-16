@@ -11,6 +11,8 @@ import {
   changeGST,
   clearCart,
   getCartItems,
+  makeCashFalse,
+  makeGSTTrue,
   removeOneItem,
 } from "../../store/slice/cart";
 import { IoClose } from "react-icons/io5";
@@ -26,7 +28,6 @@ import {
   setLoggedInUser,
 } from "../../store/slice/user";
 import { Checkbox } from "primereact/checkbox";
-import { useNavigate } from "react-router-dom";
 import { ProgressBar } from "primereact/progressbar";
 import { addBill } from "../../store/slice/bill";
 import { InputSwitch } from "primereact/inputswitch";
@@ -41,8 +42,7 @@ const Cart = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [visible, setVisible] = useState(false);
   const [toggle, setToggle] = useState(false);
-  const [checked, setChecked] = useState(false);
-  const navigate = useNavigate();
+  const [checked, setChecked] = useState(!cartDetails.cash);
   const companyDetails = {
     companyName: "Tender Town",
     address:
@@ -58,7 +58,6 @@ const Cart = () => {
         getCartItems({ userId: userDetails.selectedUser.name })
       );
       if (rs.payload.status && !cartDetails.body.loading) {
-        dispatch(changeGST());
         setData(rs.payload?.data);
       }
     } catch (error) {
@@ -93,6 +92,8 @@ const Cart = () => {
   const clearCartData = async () => {
     try {
       dispatch(clearCart());
+      dispatch(makeGSTTrue())
+      dispatch(makeCashFalse(false));
     } catch (error: any) {
       console.error("Error deleting the cart:", error.message);
     }
@@ -125,8 +126,7 @@ const Cart = () => {
           trigger={() => <ImPrinter className="cursor-pointer" />}
           content={() => invoiceRef.current}
           onAfterPrint={async () => {
-            navigate("/");
-            // await changeActiveStatus();
+            closeDialogActions();
           }}
         />
       </div>
@@ -142,7 +142,8 @@ const Cart = () => {
   // }
 
   const changeModeOfPayment = (e:any) =>{
-    setToggle(e.value)
+    setToggle(e.value);
+    dispatch(makeCashFalse(e.value))
   }
 
   const getRandomBillNumber = () => {
@@ -175,12 +176,23 @@ const Cart = () => {
     if (_id && name) {
       const rs = await dispatch(deleteUser({ id: _id, name: name }));
       if (rs.payload && rs.payload.status) {
-        dispatch(clearSelectedUser());
+        dispatch(clearSelectedUser());        
       }
     } else {
       dispatch(clearSelectedUser());
     }
+    dispatch(makeGSTTrue())
+    dispatch(makeCashFalse(false));
+    clearCartData();
   };
+
+  const getIndividualTotal = (item:any) => {
+    let price = item.price;
+    if(cartDetails.gst){
+      price += (item.price * item.gst)/100
+    }
+    return price * item.count
+  }
 
   const BasicDemo = () => {
     return (
@@ -215,7 +227,7 @@ const Cart = () => {
                 <tr>
                   <th>Item</th>
                   <th>Quantity</th>
-                  <th>GST</th>
+                  {cartDetails.gst && <th>GST</th>}
                   <th>Price</th>
                   <th>Total</th>
                 </tr>
@@ -225,9 +237,10 @@ const Cart = () => {
                   <tr key={index}>
                     <td>{item.name}</td>
                     <td>{item.count}</td>
-                    <td>{item.gst}</td>
+                    {cartDetails.gst && <td>{item.gst}</td>}
                     <td>₹ {item.price.toFixed(2)}</td>
-                    <td>₹ {(item.count * item.price).toFixed(2)}</td>
+                    {/* <td>₹ {(item.count * item.price).toFixed(2)}</td> */}
+                    <td>₹ {getIndividualTotal(item)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -322,7 +335,7 @@ const Cart = () => {
               <div className="m-3 flex justify-content-start align-items-center">
                 <span className="font-bold text-center text-sm">Cash</span>
                 <InputSwitch
-                  checked={toggle}
+                  checked={cartDetails.cash}
                   onChange={(e) => changeModeOfPayment(e)}
                   className="mx-2"
                 />

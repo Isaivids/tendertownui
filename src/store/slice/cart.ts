@@ -7,7 +7,8 @@ export interface State {
     error: boolean,
     aLoading: boolean,
     aError: boolean
-    gst : boolean
+    gst : boolean,
+    cash : any
 }
 
 const initialState: State = {
@@ -17,7 +18,8 @@ const initialState: State = {
     error: false,
     aLoading: false,
     aError: false,
-    gst : true
+    gst : true,
+    cash : false
 }
 
 export const getCartItems = createAsyncThunk('getCartItems', async (body: any) => {
@@ -126,6 +128,14 @@ const cartSlice = createSlice({
         changeGST : (state) =>{
             state.gst = !state.gst;
             state.total = calculateTotal(state.body.data,state.gst);
+        },
+        makeGSTTrue : (state) =>{
+            state.gst = true;
+            state.total = calculateTotal(state.body.data,state.gst);
+        },
+        makeCashFalse : (state,action) =>{
+            console.log(action)
+            state.cash = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -186,5 +196,5 @@ const cartSlice = createSlice({
         })
     }
 })
-export const { clearCart, addToCartReducer, changeCount,removeOneItem,changeGST } = cartSlice.actions;
+export const { clearCart, addToCartReducer, changeCount,removeOneItem,changeGST,makeGSTTrue,makeCashFalse } = cartSlice.actions;
 export default cartSlice.reducer;

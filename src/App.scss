@@ -64,6 +64,10 @@ small{
   color: #016533;
 }
 
+.p-paginator .p-paginator-pages .p-paginator-page{
+  color: $secondary-color;
+}
+
 .p-progressbar .p-progressbar-value {
   border: 0 none;
   margin: 0;

@@ -13,6 +13,7 @@ import { AppDispatch } from "../../store/store";
 import { Button } from "primereact/button";
 import { OverlayPanel } from "primereact/overlaypanel";
 import { IoCloseOutline } from "react-icons/io5";
+import { makeCashFalse, makeGSTTrue } from "../../store/slice/cart";
 
 const ActiveBills = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -27,13 +28,17 @@ const ActiveBills = () => {
     if (rs.payload && rs.payload.status) {
       dispatch(setLoggedInUser(x));
       setSelectedUser(x);
+      dispatch(makeGSTTrue());
+      dispatch(makeCashFalse(false));
     }
   };
 
   const deleteUserClikc = async (x: any) => {
     const rs = await dispatch(deleteUser({ id: x._id,name : x.name }));
     if (rs.payload && rs.payload.status) {
-      dispatch(clearSelectedUser())
+      dispatch(clearSelectedUser());
+      dispatch(makeGSTTrue());
+      dispatch(makeCashFalse(false));
     }
   };
 
@@ -64,6 +69,8 @@ const ActiveBills = () => {
     const rsa = await dispatch(addUser(body));
     if (rsa.payload && rsa.payload.status && !userDetails.body.error) {
       dispatch(setLoggedInUser(rsa.payload.data[rsa.payload.data.length - 1]));
+      dispatch(makeGSTTrue());
+      dispatch(makeCashFalse(false));
       op.current.toggle(false);
     }
   };

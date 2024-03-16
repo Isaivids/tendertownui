@@ -7,6 +7,7 @@ import ProductCard from "../../components/productCard/ProductCard";
 import { Message } from "primereact/message";
 import { Paginator } from "primereact/paginator";
 import { ProgressBar } from "primereact/progressbar";
+import { Button } from "primereact/button";
 
 const List = () => {
   const params: any = useParams();
@@ -14,6 +15,7 @@ const List = () => {
   const productDetails = useSelector((state: any) => state.productDetaild);
   const userDetails = useSelector((state: any) => state.userDetails);
   const dispatch = useDispatch<AppDispatch>();
+  const [seatchString, setSeatchString] = useState('')
   //pagination
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(10);
@@ -24,10 +26,20 @@ const List = () => {
       setFirst(event.first);
       setRows(event.rows);
   };
+  
+  const searchProducts = async() =>{
+    try {
+      const products = await dispatch(getProducts({ category: params.id === 'all' ? '' : params.id, page : page, rows:rows , name : seatchString}));
+      setData(products.payload?.data);
+      setTotalPage(products.payload.pagination.totalItems)
+    } catch (error) {
+      console.log('err',error)
+    }
+  }
 
   const fetchData = useCallback(async () => {
     try {
-      const products = await dispatch(getProducts({ category: params.id === 'all' ? '' : params.id, page : page, rows:rows }));
+      const products = await dispatch(getProducts({ category: params.id === 'all' ? '' : params.id, page : page, rows:rows , name : ''}));
       setData(products.payload?.data);
       setTotalPage(products.payload.pagination.totalItems)
     } catch (error) {
@@ -48,6 +60,10 @@ const List = () => {
       {productDetails.error && <Message severity="error" text="Unable to fetch Data" />}
       {(!productDetails.loading && !productDetails.error) && (  
         <>
+          <div className="flex m-2 gap-2 col justify-content-center">
+            <input type="text" className="col-9" value={seatchString} onChange={(e:any) => setSeatchString(e.target.value)}/>
+            <Button style={{height:'30px'}} label="Search" severity="success" onClick={searchProducts}/>
+          </div>
           <ProductCard data={data} userDetails={userDetails}/>
           <Paginator first={first} rows={rows} totalRecords={totalPage} onPageChange={onPageChange} />
         </>
