@@ -98,7 +98,7 @@ const Products = () => {
 
   const fetchData = useCallback(async () => {
     try {
-      const data = await dispatch(getProducts({ category: "",page : page, rows:rows }));
+      const data = await dispatch(getProducts({ category: "",page : page, rows:rows,name : '' }));
       await dispatch(getCategory());
       setData(data.payload?.data);
       setTotalPage(data.payload.pagination.totalItems)

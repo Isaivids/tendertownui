@@ -72,10 +72,10 @@ const ProductCard = ({ data, userDetails }: any) => {
               </div>
               <div className="name flex justify-content-between pmy text-center p-2 w-full">
                 <span
-                  className="text-sm font-semibold overflow-hidden whitespace-nowrap text-overflow-ellipsis"
+                  className="text-sm font-semibold"
                   title={x.name}
                 >
-                  {x.name}
+                  {x.name.length <= 8 ? x.name : x.name.substring(0,8)+'...'}
                 </span>
                 <span className="text-sm font-semibold"> ₹ - {x.amount}</span>
               </div>
@@ -98,7 +98,9 @@ const ProductCard = ({ data, userDetails }: any) => {
             </div>
           );
         })
-      ) :<img src={nodata} alt="No Data" style={{ width: "30vh" }} />}
+      ) : (
+        <img src={nodata} alt="No Data" style={{ width: "30vh" }} />
+      )}
     </div>
   );
 };

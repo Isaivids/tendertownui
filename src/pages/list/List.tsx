@@ -18,7 +18,7 @@ const List = () => {
   const [seatchString, setSeatchString] = useState('')
   //pagination
   const [first, setFirst] = useState(0);
-  const [rows, setRows] = useState(10);
+  const [rows, setRows] = useState(20);
   const [totalPage, setTotalPage] = useState(0);
   const [page, setPage] = useState(0)
   const onPageChange = (event:any) => {
@@ -62,6 +62,7 @@ const List = () => {
         <>
           <div className="flex m-2 gap-2 col justify-content-center">
             <input type="text" className="col-9" value={seatchString} onChange={(e:any) => setSeatchString(e.target.value)}/>
+            <Button label="Clear" style={{height:'30px'}} severity="warning" onClick={() => setSeatchString('')} disabled={!seatchString}/>
             <Button style={{height:'30px'}} label="Search" severity="success" onClick={searchProducts}/>
           </div>
           <ProductCard data={data} userDetails={userDetails}/>

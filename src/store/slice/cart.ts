@@ -134,7 +134,6 @@ const cartSlice = createSlice({
             state.total = calculateTotal(state.body.data,state.gst);
         },
         makeCashFalse : (state,action) =>{
-            console.log(action)
             state.cash = action.payload;
         }
     },
@@ -143,8 +142,8 @@ const cartSlice = createSlice({
             return { ...state, loading: true }
         })
         builder.addCase(getCartItems.fulfilled, (state, { payload }) => {
-            calculateTotal(state.body.data,state.gst);
-            return { ...state, body: payload, error: false, loading: false }
+            const total = calculateTotal(payload.data,state.gst);
+            return { ...state, body: payload, error: false, loading: false, total : total }
         })
         builder.addCase(getCartItems.rejected, (state) => {
             return { ...state, loading: false, error: true }
