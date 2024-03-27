@@ -18,7 +18,7 @@ const List = () => {
   const [seatchString, setSeatchString] = useState('')
   //pagination
   const [first, setFirst] = useState(0);
-  const [rows, setRows] = useState(20);
+  const [rows, setRows] = useState(100);
   const [totalPage, setTotalPage] = useState(0);
   const [page, setPage] = useState(0)
   const onPageChange = (event:any) => {
@@ -39,7 +39,7 @@ const List = () => {
 
   const fetchData = useCallback(async () => {
     try {
-      const products = await dispatch(getProducts({ category: params.id === 'all' ? '' : params.id, page : page, rows:rows , name : ''}));
+      const products = await dispatch(getProducts({ category: params.id === 'all' ? '' : params.id, page : params.id !== 'all' ? null : page, rows:params.id !== 'all' ? null : rows , name : ''}));
       setData(products.payload?.data);
       setTotalPage(products.payload.pagination.totalItems)
     } catch (error) {
@@ -66,7 +66,7 @@ const List = () => {
             <Button style={{height:'30px'}} label="Search" severity="success" onClick={searchProducts}/>
           </div>
           <ProductCard data={data} userDetails={userDetails}/>
-          <Paginator first={first} rows={rows} totalRecords={totalPage} onPageChange={onPageChange} />
+          { params.id === 'all' && <Paginator first={first} rows={rows} totalRecords={totalPage} onPageChange={onPageChange} />}  
         </>
       )}
     </div>
