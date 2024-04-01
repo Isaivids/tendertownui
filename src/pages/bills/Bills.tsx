@@ -14,8 +14,9 @@ const Bills = () => {
   yesterday.setDate(today.getDate() - 1);
   const tomorrow = new Date(today);
   tomorrow.setDate(today.getDate() + 1);
-  const [date, setDate] = useState({ startDate: yesterday, endDate: tomorrow });
-  let maxDate = tomorrow;
+  const endOfToday = new Date();
+  endOfToday.setHours(23, 59, 59, 999);
+  const [date, setDate] = useState({ startDate: today, endDate: today });
   const dispatch = useDispatch<AppDispatch>();
   const billDetails = useSelector((state: any) => state.billDetails);
 
@@ -60,7 +61,7 @@ const Bills = () => {
             header="Bill Date"
             sortable
             body={(rowData) => {
-              return new Date(rowData.createdAt).toLocaleDateString();
+              return new Date(rowData.createdAt).toLocaleDateString('en-US',{ day: '2-digit', month: 'short', year: 'numeric' });
             }}
           ></Column>
           <Column field="billNumber" header="Bill Number" sortable></Column>
@@ -84,7 +85,7 @@ const Bills = () => {
               name="startDate"
               value={date.startDate}
               onChange={handleDateChange}
-              maxDate={maxDate}
+              maxDate={endOfToday}
               readOnlyInput
             />
           </div>
@@ -94,7 +95,6 @@ const Bills = () => {
               name="endDate"
               value={date.endDate}
               onChange={handleDateChange}
-              maxDate={maxDate}
               readOnlyInput
             />
           </div>

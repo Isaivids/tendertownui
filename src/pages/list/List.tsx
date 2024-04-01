@@ -62,8 +62,8 @@ const List = () => {
         <>
           <div className="flex m-2 gap-2 col justify-content-center">
             <input type="text" className="col-9" value={seatchString} onChange={(e:any) => setSeatchString(e.target.value)}/>
-            <Button label="Clear" style={{height:'30px'}} severity="warning" onClick={() => setSeatchString('')} disabled={!seatchString}/>
             <Button style={{height:'30px'}} label="Search" severity="success" onClick={searchProducts}/>
+            <Button label="Clear" style={{height:'30px'}} severity="warning" onClick={() => setSeatchString('')} disabled={!seatchString}/>
           </div>
           <ProductCard data={data} userDetails={userDetails}/>
           { params.id === 'all' && <Paginator first={first} rows={rows} totalRecords={totalPage} onPageChange={onPageChange} />}  

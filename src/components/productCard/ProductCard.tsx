@@ -70,14 +70,15 @@ const ProductCard = ({ data, userDetails }: any) => {
               >
                 <img src={x.photo} alt={x.name} />
               </div>
-              <div className="name flex justify-content-between pmy text-center p-2 w-full">
+              <div className="name flex flex-column justify-content-between pmy text-center p-2 w-full">
                 <span
-                  className="text-sm font-semibold"
+                  className="font-semibold"
                   title={x.name}
                 >
-                  {x.name.length <= 8 ? x.name : x.name.substring(0,8)+'...'}
+                  {x.name}
+                  {/* {x.name.length <= 20 ? x.name : x.name.substring(0,20)+'...'} */}
                 </span>
-                <span className="text-sm font-semibold"> ₹ - {x.amount}</span>
+                <span className="font-semibold"> ₹  {x.amount}</span>
               </div>
               <div className="p-0 flex justify-content-between count">
                 <span className="text-center" onClick={() => addItemToCart(x)}>
