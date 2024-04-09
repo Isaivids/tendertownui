@@ -38,6 +38,7 @@ const NavBar = () => {
     dispatch(clearUser());
     dispatch(clearProducts());
     dispatch(clearSelectedUser());
+    sessionStorage.removeItem('isAdmin')
     navigate("/");
   };
 
